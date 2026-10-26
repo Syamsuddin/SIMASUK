@@ -18,17 +18,4 @@ Kriteria UI umum untuk setiap halaman fitur (pola: docs/26): empat state tampil 
 ```bash
 vendor/bin/phpunit --filter='AgendaNumberServiceTest|SuratMasukServiceTest|FileStoreTest|SuratMasukRepositoryTest'
 ```
-Lulus: `OK`, termasuk tes konkurensi dua koneksi. Manual: catat satu surat dengan PDF 3 berkas < 3 menit.
-
-## F-DISPO — Disposisi berjenjang (F3)
-- Given surat Diterima, When Operator mencatat disposisi ke 2 unit, Then 2 baris `disposisi` status dikirim dan surat menjadi Didisposisi.
-- Given disposisi induk ke Bidang PSDM, When Disposisi Lanjutan ke Subbidang, Then `parent_id` terisi dan pohon menampilkan indentasi.
-- Given `parent_id` milik surat lain (dimanipulasi di request), Then ditolak 422.
-- Given tenggat sebelum `tgl_terima`, Then ditolak di field tenggat.
-- Given surat Selesai atau Dibatalkan, Then tombol disposisi tak tampil dan POST langsung ditolak.
-- Given surat ditandai Selesai, Then disposisi berstatus dikirim ikut selesai dengan `catatan_selesai` "Ditutup bersama surat".
-
-```bash
-vendor/bin/phpunit --filter='DisposisiServiceTest|DisposisiRepositoryTest'
-```
-Lulus: `OK`.
+Lulus: `OK`, termasuk tes konkurensi dua koneksi. Manual: catat satu surat dengan PDF 3 berkas < 3 menit (diukur operator; tampilan 768px sudah lulus 2026-10-26).

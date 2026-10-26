@@ -4,8 +4,8 @@ Fase = vertical slice (DB → Service → halaman) yang bisa didemokan. Fitur: d
 | Fase | Tujuan yang bisa didemokan | Fitur tercakup | Status |
 |---|---|---|---|
 | F1 Fondasi | Admin login, membuat akun Operator, mengisi master klasifikasi dan unit; log audit mulai tercatat | Kerangka native (router, bootstrap, migrasi, layout Tailwind), F-AUTH, F-MASTER, F-AUDIT (pencatatan) | Selesai 2026-10-26 |
-| F2 Agenda | Operator mencatat surat + unggah PDF, nomor agenda terbit, surat bisa dicari dan dibuka | F-AGENDA | Gerbang mesin lulus 2026-10-26; menunggu uji manual (catat 3 PDF < 3 menit, tampilan 768px) |
-| F3 Disposisi | Operator menginput disposisi berjenjang, melihat pohon riwayat, menandai selesai | F-DISPO | Gerbang mesin lulus 2026-10-26; menunggu uji manual (tampilan 768px) |
+| F2 Agenda | Operator mencatat surat + unggah PDF, nomor agenda terbit, surat bisa dicari dan dibuka | F-AGENDA | Gerbang mesin lulus 2026-10-26; 768px lulus; menunggu uji operator (catat 3 PDF < 3 menit) |
+| F3 Disposisi | Operator menginput disposisi berjenjang, melihat pohon riwayat, menandai selesai | F-DISPO | Selesai 2026-10-26 |
 | F4 Dasbor | Dasbor ringkas tampil; Admin melihat log audit; pencarian lanjut rentang tanggal & sifat | F-DASBOR, F-AUDIT (halaman), penyempurnaan pencarian | Selesai 2026-10-26 (dimulai sebelum uji manual F2/F3 tuntas, atas permintaan) |
 | Pasca-MVP | Diputuskan setelah F4 diterima | Cetak lembar disposisi, notifikasi, rekap xlsx, peran Pimpinan | Belum |
 
