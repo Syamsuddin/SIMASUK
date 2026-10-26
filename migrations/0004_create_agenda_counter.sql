@@ -1,0 +1,5 @@
+CREATE TABLE agenda_counter (
+    tahun SMALLINT UNSIGNED NOT NULL,
+    last_no INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (tahun)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,8 @@
+/vendor/
+/bin/tailwindcss
+/storage/
+/logs/
+.env
+/MAINTENANCE
+.phpunit.cache/
+.phpunit.result.cache

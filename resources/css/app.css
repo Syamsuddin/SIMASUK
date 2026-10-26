@@ -1,0 +1,96 @@
+/* Sumber Tailwind v4. Token = docs/26_UI_CONVENTIONS.md; palet & skala bawaan di-reset agar
+   nilai di luar tabel token tidak bisa terbangun. Jangan edit public/assets/app.css manual. */
+@import "tailwindcss" source(none);
+
+@source "../../modules/**/views/*.php";
+@source "../../resources/views/**/*.php";
+@source "../../public/assets/app.js";
+
+@theme {
+  --color-*: initial;
+  --color-primary: #166534;
+  --color-primary-hover: #14532D;
+  --color-primary-soft: #DCFCE7;
+  --color-on-primary: #FFFFFF;
+  --color-accent: #CA8A04;
+  --color-ink: #0F172A;
+  --color-ink-muted: #64748B;
+  --color-line: #E2E8F0;
+  --color-canvas: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F1F5F9;
+  --color-success: #15803D;
+  --color-warning: #B45309;
+  --color-danger: #B91C1C;
+  --color-info: #1D4ED8;
+
+  --font-*: initial;
+  --font-sans: Inter, system-ui, sans-serif;
+
+  /* kecil 12/16 · basis 14/20 · H2 16/24 · H1 20/28 */
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 20px;
+  --text-lg--line-height: 28px;
+
+  --radius-*: initial;
+  --radius-md: 6px;
+
+  --shadow-*: initial;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .08);
+}
+
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/Inter-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/Inter-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/Inter-SemiBold.woff2") format("woff2");
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  /* Fokus keyboard: cincin 2px primer, offset 2px (docs/26 aksesibilitas). */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  dialog::backdrop {
+    background-color: rgba(15, 23, 42, .5);
+  }
+  dialog[open] {
+    animation: masuk 150ms ease-out;
+  }
+}
+
+@keyframes masuk {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

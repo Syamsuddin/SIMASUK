@@ -3,29 +3,6 @@ Hanya fitur AKTIF. Fitur yang diterima dipindah ke `docs/_archive/23-<fitur>.md`
 
 Kriteria UI umum untuk setiap halaman fitur (pola: docs/26): empat state tampil · pesan validasi muncul di bawah field · layak di 768px tanpa gulir horizontal halaman · aksi destruktif lewat dialog konfirmasi · hanya token/komponen docs/26.
 
-## F-AUTH — Login + kelola pengguna (F1)
-- Given admin aktif, When login dengan password benar, Then masuk ke Dasbor dan `last_login_at` terisi.
-- Given password salah 5×, When percobaan ke-6 dengan password benar dalam 15 menit, Then ditolak "Username atau password salah." dan `log_audit` mencatat `auth.locked`.
-- Given pengguna nonaktif, When login, Then ditolak dengan pesan yang sama.
-- Given Operator login, When membuka `/pengguna`, Then 403.
-- Given Admin, When menonaktifkan admin aktif terakhir atau dirinya sendiri, Then ditolak dengan pesan aturan.
-- Given POST apa pun tanpa token CSRF, Then 419.
-
-```bash
-vendor/bin/phpunit --filter='AuthServiceTest|RoleMiddlewareTest|CsrfTest|PenggunaServiceTest'
-```
-Lulus: `OK`. Gagal: ada failure/error.
-
-## F-MASTER — Klasifikasi & unit (F1)
-- Given kode klasifikasi sudah ada, When Admin menyimpan kode sama, Then ditolak "Kode klasifikasi sudah dipakai."
-- Given unit dinonaktifkan, Then unit tidak muncul di pilihan tujuan disposisi, tetapi disposisi lama tetap menampilkan namanya.
-- Given unit punya anak, When Admin memilih unit itu sendiri/anaknya sebagai induk, Then ditolak (hierarki tidak boleh melingkar).
-
-```bash
-vendor/bin/phpunit --filter='KlasifikasiServiceTest|UnitKerjaServiceTest'
-```
-Lulus: `OK`.
-
 ## F-AGENDA — Agenda surat masuk (F2)
 - Given belum ada surat tahun 2026, When surat pertama dengan `tgl_terima` 2026 disimpan, Then `no_agenda = 1`, tampil `0001/2026`.
 - Given surat terakhir 2025 bernomor 412, When surat dengan `tgl_terima` 2026-01-02 disimpan, Then nomornya 1 (reset).

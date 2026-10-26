@@ -1,0 +1,23 @@
+CREATE TABLE disposisi (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    surat_id INT UNSIGNED NOT NULL,
+    parent_id INT UNSIGNED NULL,
+    unit_tujuan_id INT UNSIGNED NOT NULL,
+    tgl_disposisi DATE NOT NULL,
+    instruksi VARCHAR(500) NOT NULL,
+    catatan VARCHAR(500) NULL,
+    tenggat DATE NULL,
+    status ENUM('dikirim','selesai') NOT NULL DEFAULT 'dikirim',
+    selesai_at DATETIME NULL,
+    catatan_selesai VARCHAR(500) NULL,
+    created_by INT UNSIGNED NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    KEY idx_disposisi_surat (surat_id),
+    KEY idx_disposisi_status_tenggat (status, tenggat),
+    CONSTRAINT fk_disposisi_surat FOREIGN KEY (surat_id) REFERENCES surat_masuk (id) ON DELETE RESTRICT,
+    CONSTRAINT fk_disposisi_parent FOREIGN KEY (parent_id) REFERENCES disposisi (id) ON DELETE RESTRICT,
+    CONSTRAINT fk_disposisi_unit FOREIGN KEY (unit_tujuan_id) REFERENCES unit_kerja (id) ON DELETE RESTRICT,
+    CONSTRAINT fk_disposisi_created_by FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
