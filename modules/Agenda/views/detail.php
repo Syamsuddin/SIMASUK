@@ -3,17 +3,21 @@
 declare(strict_types=1);
 
 use Modules\Agenda\Service\SuratMasukService;
+use Modules\Disposisi\Service\DisposisiService;
 
 /**
- * Detail surat: metadata, berkas, aksi (docs/26). Pohon disposisi ditambahkan di F3.
+ * Detail surat: metadata, berkas, pohon disposisi, aksi (docs/26).
  *
  * @var array<string,mixed> $surat
  * @var list<array<string,mixed>> $berkas
+ * @var list<array<string,mixed>> $disposisi pohon dari DisposisiService::tree()
  * @var bool $isAdmin
  */
 $id = (int) $surat['id'];
 $nomor = SuratMasukService::nomor($surat);
 $batal = $surat['status'] === 'dibatalkan';
+$terbuka = DisposisiService::terbuka($surat);
+$dikirim = DisposisiService::jumlahDikirim($disposisi);
 $statusBadge = ['diterima' => 'info', 'didisposisi' => 'warning', 'selesai' => 'success', 'dibatalkan' => 'danger-garis'];
 $ukuran = static fn (int $byte): string => $byte >= 1048576
     ? number_format($byte / 1048576, 1, ',', '.') . ' MB'
@@ -39,6 +43,18 @@ $meta = [
     </div>
     <div class="flex flex-wrap gap-2">
         <?= component('button', ['label' => 'Kembali', 'href' => '/surat-masuk', 'variant' => 'garis']) ?>
+        <?php if ($terbuka): ?>
+        <?= component('button', ['label' => 'Catat Disposisi', 'href' => '/surat-masuk/' . $id . '/disposisi/baru', 'icon' => 'plus']) ?>
+        <?= component('button', ['label' => 'Tandai Selesai', 'variant' => 'garis', 'type' => 'button', 'icon' => 'check-circle', 'attr' => ['data-dialog-open' => 'selesai-surat']]) ?>
+        <?= component('confirm-dialog', [
+            'id' => 'selesai-surat',
+            'title' => 'Tandai surat ' . $nomor . ' selesai?',
+            'uraian' => 'Status surat menjadi Selesai dan disposisi tidak dapat dicatat lagi.'
+                . ($dikirim > 0 ? ' ' . $dikirim . ' disposisi yang masih Dikirim ikut ditutup dengan catatan "' . DisposisiService::CATATAN_TUTUP_SURAT . '".' : ''),
+            'action' => '/surat-masuk/' . $id . '/selesai',
+            'confirmLabel' => 'Tandai Selesai',
+        ]) ?>
+        <?php endif ?>
         <?php if (!$batal): ?>
         <?= component('button', ['label' => 'Ubah', 'href' => '/surat-masuk/' . $id . '/ubah', 'variant' => 'garis', 'icon' => 'pencil-square']) ?>
         <?php if ($isAdmin): ?>
@@ -59,6 +75,9 @@ $meta = [
 
 <?php if (error('alasan') !== null): ?>
 <p role="alert" class="mb-4 rounded-md border border-danger bg-surface px-3 py-2 text-sm text-danger">Surat belum dibatalkan. Alasan pembatalan: <?= e(error('alasan')) ?></p>
+<?php endif ?>
+<?php if (error('catatan_selesai') !== null): ?>
+<p role="alert" class="mb-4 rounded-md border border-danger bg-surface px-3 py-2 text-sm text-danger">Disposisi belum ditandai selesai. Catatan tindak lanjut: <?= e(error('catatan_selesai')) ?></p>
 <?php endif ?>
 <?php if ($batal): ?>
 <div role="status" class="mb-4 rounded-md border border-danger bg-surface px-3 py-2 text-sm">
@@ -104,3 +123,21 @@ $meta = [
         <?php endif ?>
     </section>
 </div>
+
+<section class="mt-6 rounded-md border border-line bg-surface shadow-sm">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+        <h2 class="text-base font-semibold">Disposisi</h2>
+        <?php if ($disposisi !== [] && $terbuka): ?>
+        <?= component('button', ['label' => 'Catat Disposisi', 'href' => '/surat-masuk/' . $id . '/disposisi/baru', 'variant' => 'teks']) ?>
+        <?php endif ?>
+    </header>
+    <?php if ($disposisi === []): ?>
+    <?= component('empty-state', $terbuka
+        ? ['message' => 'Belum ada disposisi untuk surat ini.', 'icon' => 'inbox', 'actionLabel' => 'Catat Disposisi', 'actionHref' => '/surat-masuk/' . $id . '/disposisi/baru']
+        : ['message' => 'Surat ini ' . ($batal ? 'dibatalkan' : 'selesai') . ' tanpa disposisi.', 'icon' => 'inbox']) ?>
+    <?php else: ?>
+    <div class="p-4">
+        <?= component('dispo-tree', ['nodes' => $disposisi, 'terbuka' => $terbuka]) ?>
+    </div>
+    <?php endif ?>
+</section>

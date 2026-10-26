@@ -10,11 +10,15 @@ use App\Core\Response;
 use App\Core\Session;
 use App\Core\View;
 use Modules\Agenda\Service\SuratMasukService;
+use Modules\Disposisi\Service\DisposisiService;
 
 final class SuratMasukController
 {
-    public function __construct(private readonly SuratMasukService $service, private readonly Session $session)
-    {
+    public function __construct(
+        private readonly SuratMasukService $service,
+        private readonly DisposisiService $disposisi,
+        private readonly Session $session
+    ) {
     }
 
     public function index(Request $request): Response
@@ -32,6 +36,7 @@ final class SuratMasukController
             'title' => 'Surat ' . SuratMasukService::nomor($detail['surat']),
             'surat' => $detail['surat'],
             'berkas' => $detail['berkas'],
+            'disposisi' => $this->disposisi->tree($id),
             'isAdmin' => ($request->user()['role'] ?? '') === 'admin',
         ]);
     }

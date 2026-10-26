@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 /**
  * Dialog konfirmasi aksi destruktif (docs/26). Dibuka tombol ber-data-dialog-open="$id";
- * Esc menutup dan fokus kembali ke pemicu (app.js). Opsional field alasan wajib ($reasonName).
+ * Esc menutup dan fokus kembali ke pemicu (app.js). Opsional field alasan ($reasonName), wajib kecuali
+ * $reasonRequired = false.
  *
  * @var string $id
  * @var string $title
  * @var string $uraian dampak aksi
  * @var string $action URL POST
  * @var string $confirmLabel
- * @var string|null $reasonName nama field alasan wajib
+ * @var string|null $reasonName nama field alasan
  * @var string|null $reasonLabel
+ * @var bool|null $reasonRequired default true
+ * @var int|null $reasonMax panjang maksimal alasan, default 255
  */
+$reasonRequired ??= true;
 ?>
 <dialog id="<?= e($id) ?>" aria-labelledby="<?= e($id) ?>-judul" class="m-auto w-full max-w-md rounded-md border border-line bg-surface p-0 text-ink shadow-sm">
     <form method="post" action="<?= e($action) ?>" class="flex flex-col gap-4 p-6">
@@ -22,8 +26,8 @@ declare(strict_types=1);
         <p class="text-sm text-ink-muted"><?= e($uraian) ?></p>
         <?php if (isset($reasonName)): ?>
         <div class="flex flex-col gap-1">
-            <label for="<?= e($id) ?>-alasan" class="text-xs font-medium text-ink-muted"><?= e($reasonLabel ?? 'Alasan') ?> <span class="text-danger" aria-hidden="true">*</span></label>
-            <textarea id="<?= e($id) ?>-alasan" name="<?= e($reasonName) ?>" rows="3" maxlength="255" required class="w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink"></textarea>
+            <label for="<?= e($id) ?>-alasan" class="text-xs font-medium text-ink-muted"><?= e($reasonLabel ?? 'Alasan') ?><?php if ($reasonRequired): ?> <span class="text-danger" aria-hidden="true">*</span><?php endif ?></label>
+            <textarea id="<?= e($id) ?>-alasan" name="<?= e($reasonName) ?>" rows="3" maxlength="<?= e($reasonMax ?? 255) ?>"<?= $reasonRequired ? ' required' : '' ?> class="w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink"></textarea>
         </div>
         <?php endif ?>
         <div class="flex justify-end gap-2">

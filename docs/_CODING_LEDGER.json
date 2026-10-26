@@ -22,14 +22,29 @@
       "step": 7,
       "detik": 2569,
       "tok_est": 58119
+    },
+    {
+      "mulai": "2026-10-26T15:36:56+08:00",
+      "selesai": null,
+      "step": 6,
+      "detik": 1124,
+      "tok_est": 68563
     }
   ],
   "step_berjalan": null,
   "blueprint": {
     "sidik_awal": "a569273905ed54f9",
-    "sidik": "a569273905ed54f9",
+    "sidik": "7b8b832998d93adb",
     "dokumen": 27,
-    "disegel": "2026-10-26T15:09:52+08:00"
+    "disegel": "2026-10-26T15:36:56+08:00",
+    "sidik_sebelumnya": "a569273905ed54f9",
+    "riwayat": [
+      {
+        "dari": "a569273905ed54f9",
+        "ke": "7b8b832998d93adb",
+        "pada": "2026-10-26T15:36:56+08:00"
+      }
+    ]
   },
   "riwayat_fitur": [
     {
@@ -508,13 +523,178 @@
         "Blok F-AGENDA di 23 diarsipkan setelah uji manual lulus"
       ],
       "selesai": "2026-10-26T15:34:04+08:00"
+    },
+    {
+      "fitur": "F3 Disposisi",
+      "rute": "Fitur baru (vertical slice)",
+      "mulai": "2026-10-26T15:40:24+08:00",
+      "rencana": [
+        "modules/Disposisi/Repository/DisposisiRepository.php",
+        "modules/Disposisi/Service/DisposisiService.php",
+        "modules/Disposisi/Controller/DisposisiController.php",
+        "modules/Disposisi/views/form.php",
+        "resources/views/components/dispo-tree.php",
+        "resources/views/components/confirm-dialog.php",
+        "modules/Agenda/Repository/SuratMasukRepository.php",
+        "modules/Agenda/Controller/SuratMasukController.php",
+        "modules/Agenda/views/detail.php",
+        "config/routes.php",
+        "public/assets/app.css",
+        "tests/Integration/DisposisiServiceTest.php",
+        "tests/Integration/DisposisiRepositoryTest.php",
+        "tests/Integration/SuratMasukServiceTest.php",
+        "docs/23_ACCEPTANCE_CRITERIA.md",
+        "docs/_archive/23-f3-disposisi.md",
+        "docs/03_ROADMAP.md",
+        "docs/_MANIFEST.json",
+        "docs/_CODING_LEDGER.json",
+        "docs/_TOKEN_LEDGER.json"
+      ],
+      "total_step": 0,
+      "step": [
+        {
+          "no": 1,
+          "nama": "Repository/akses data",
+          "mulai": "2026-10-26T15:40:24+08:00",
+          "selesai": "2026-10-26T15:40:57+08:00",
+          "detik": 34,
+          "tok_est": 10637,
+          "muat": [
+            "docs/03_ROADMAP.md",
+            "docs/23_ACCEPTANCE_CRITERIA.md",
+            "docs/02_SCOPE.md",
+            "docs/05_USER_ROLE.md",
+            "docs/06_BUSINESS_PROCESS.md",
+            "docs/07_DATA_MODEL.md",
+            "docs/11_COMMANDS.md",
+            "docs/12_PROJECT_STRUCTURE.md",
+            "migrations/0007_create_disposisi.sql",
+            "modules/Disposisi/Repository/DisposisiRepository.php",
+            "modules/Agenda/Repository/SuratMasukRepository.php",
+            "app/Core/Database.php"
+          ]
+        },
+        {
+          "no": 2,
+          "nama": "Service/logika domain",
+          "mulai": "2026-10-26T15:41:34+08:00",
+          "selesai": "2026-10-26T15:43:50+08:00",
+          "detik": 137,
+          "tok_est": 13045,
+          "muat": [
+            "modules/Disposisi/Service/DisposisiService.php",
+            "modules/Agenda/Service/SuratMasukService.php",
+            "modules/Master/Service/UnitKerjaService.php",
+            "app/Core/Validator.php",
+            "app/Core/App.php",
+            "app/Core/DomainRuleException.php",
+            "app/Core/HttpException.php",
+            "docs/14_ERROR_HANDLING.md"
+          ]
+        },
+        {
+          "no": 3,
+          "nama": "Endpoint/controller/rute",
+          "mulai": "2026-10-26T15:44:03+08:00",
+          "selesai": "2026-10-26T15:44:51+08:00",
+          "detik": 49,
+          "tok_est": 4781,
+          "muat": [
+            "modules/Disposisi/Controller/DisposisiController.php",
+            "modules/Agenda/Controller/SuratMasukController.php",
+            "config/routes.php",
+            "app/Core/Request.php",
+            "app/Core/Router.php",
+            "app/Core/Response.php"
+          ]
+        },
+        {
+          "no": 4,
+          "nama": "UI + empat state",
+          "mulai": "2026-10-26T15:44:51+08:00",
+          "selesai": "2026-10-26T15:46:55+08:00",
+          "detik": 124,
+          "tok_est": 16644,
+          "muat": [
+            "docs/26_UI_CONVENTIONS.md",
+            "resources/views/components/dispo-tree.php",
+            "resources/views/components/confirm-dialog.php",
+            "resources/views/components/field.php",
+            "resources/views/components/badge.php",
+            "resources/views/components/button.php",
+            "resources/views/components/empty-state.php",
+            "modules/Disposisi/views/form.php",
+            "modules/Agenda/views/detail.php",
+            "modules/Agenda/views/form.php",
+            "modules/Master/views/unit_index.php",
+            "public/assets/app.css"
+          ]
+        },
+        {
+          "no": 5,
+          "nama": "Tes",
+          "mulai": "2026-10-26T15:46:55+08:00",
+          "selesai": "2026-10-26T15:50:57+08:00",
+          "detik": 242,
+          "tok_est": 17101,
+          "muat": [
+            "tests/Integration/DisposisiServiceTest.php",
+            "tests/Integration/DisposisiRepositoryTest.php",
+            "tests/Integration/SuratMasukServiceTest.php",
+            "tests/Integration/SuratMasukRepositoryTest.php",
+            "tests/Integration/IntegrationTestCase.php",
+            "tests/Unit/RoleMiddlewareTest.php"
+          ]
+        },
+        {
+          "no": 6,
+          "nama": "Gerbang fitur",
+          "mulai": "2026-10-26T15:50:57+08:00",
+          "selesai": "2026-10-26T15:59:54+08:00",
+          "detik": 538,
+          "tok_est": 6355,
+          "muat": [
+            "/Users/syams/.claude/skills/coding-vcbd/references/gerbang-selesai.md",
+            "docs/20_GUARDRAILS.md",
+            "docs/21_SECURITY_RULES.md",
+            "modules/Disposisi/Service/DisposisiService.php"
+          ]
+        }
+      ],
+      "detik": 1124,
+      "tok_est": 68563,
+      "deviasi": [
+        "resources/views/components/confirm-dialog.php — tambah prop opsional reasonRequired/reasonMax (kompatibel mundur) agar catatan tindak lanjut disposisi boleh kosong dan maks 500",
+        "modules/Agenda/Repository/SuratMasukRepository.php — tambah lockForUpdate()/updateStatus(); SQL surat_masuk tetap di repository pemiliknya, dipakai DisposisiService",
+        "tests/Integration/SuratMasukServiceTest.php — render detail kini wajib variabel disposisi; tes F2 diberi disposisi kosong, asersi tak diubah",
+        "Branch fitur/f3-disposisi bertumpuk di atas fitur/f2-agenda karena F2 belum di-merge ke main"
+      ],
+      "warn_dilewati": [
+        "S1: blok 23 bernama F-DISPO, bukan 'F3 Disposisi'; 6 butir dibuktikan manual lewat DisposisiServiceTest + smoke server nyata 28/28",
+        "S6: diperiksa manual — letak/penamaan sesuai 12, SQL hanya di Repository, aturan di Service, output view lewat e() (sisa hanya literal statis), semua rute bermiddleware auth, CSRF 419 terbukti",
+        "S8: skrip tak mengenali view .php sebagai UI; empat state diperiksa manual (kosong: empty-state detail & form tanpa unit; memuat: tombol submit/dialog berlabel memuat; gagal: ringkasan + pesan per field, toast aturan, 404; sukses: redirect + toast)"
+      ],
+      "asumsi": [
+        "Tandai disposisi Selesai lewat dialog dengan catatan tindak lanjut opsional; 06/23 tak mewajibkan catatan",
+        "Surat berstatus Diterima tanpa disposisi boleh langsung ditandai Selesai; 06 P2 tak membatasi",
+        "tgl_disposisi tidak divalidasi terhadap tgl_terima/hari ini; 07/06 tak menyebut aturan",
+        "Badge status disposisi Dikirim memakai varian info dari badge.php; 26 hanya mendaftar status surat",
+        "Unit tujuan dikirim sebagai field skalar tujuan_<id> agar isian lama tetap terpilih (App::oldInput membuang array); centang unit nonaktif ditolak 'Pilihan tidak valid.'",
+        "Perubahan status otomatis Diterima->Didisposisi dicatat sebagai audit surat.update; aksi baru disposisi.create, disposisi.selesai, surat.selesai"
+      ],
+      "ditunda": [
+        "Ubah disposisi (matriks 05 menyebut 'ubah', tetapi 06 P2 dan 23 tak mendefinisikan alurnya) — perlu keputusan pemilik produk",
+        "Uji manual tampilan 768px F3 (jendela Chrome tak bisa dikecilkan di bawah 1024px, popup diblokir); blok F-DISPO di 23 belum diarsipkan sampai lulus",
+        "Uji manual F2 (catat 3 PDF < 3 menit, 768px) masih terbuka dari sesi sebelumnya"
+      ],
+      "selesai": "2026-10-26T16:00:19+08:00"
     }
   ],
   "akumulasi": {
-    "detik": 3731,
-    "tok_est": 120399,
+    "detik": 4855,
+    "tok_est": 188962,
     "tok_terukur": 0,
-    "step": 13,
-    "fitur": 2
+    "step": 19,
+    "fitur": 3
   }
 }

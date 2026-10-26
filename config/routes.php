@@ -6,6 +6,7 @@ use Modules\Agenda\Controller\BerkasController;
 use Modules\Agenda\Controller\SuratMasukController;
 use Modules\Auth\Controller\AuthController;
 use Modules\Dasbor\Controller\DasborController;
+use Modules\Disposisi\Controller\DisposisiController;
 use Modules\Master\Controller\KlasifikasiController;
 use Modules\Master\Controller\UnitKerjaController;
 use Modules\Pengguna\Controller\PenggunaController;
@@ -30,6 +31,10 @@ return [
     ['GET', '/surat-masuk/{id}/ubah', [SuratMasukController::class, 'edit'], ['auth']],
     ['POST', '/surat-masuk/{id}/ubah', [SuratMasukController::class, 'update'], ['auth']],
     ['POST', '/surat-masuk/{id}/batalkan', [SuratMasukController::class, 'cancel'], $admin],
+    ['POST', '/surat-masuk/{id}/selesai', [DisposisiController::class, 'closeSurat'], ['auth']],
+    ['GET', '/surat-masuk/{id}/disposisi/baru', [DisposisiController::class, 'create'], ['auth']],
+    ['POST', '/surat-masuk/{id}/disposisi', [DisposisiController::class, 'store'], ['auth']],
+    ['POST', '/disposisi/{id}/selesai', [DisposisiController::class, 'markDone'], ['auth']],
     ['GET', '/berkas/{id}', [BerkasController::class, 'download'], ['auth']],
 
     ['GET', '/pengguna', [PenggunaController::class, 'index'], $admin],

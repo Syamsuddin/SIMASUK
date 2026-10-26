@@ -395,7 +395,7 @@ final class SuratMasukServiceTest extends IntegrationTestCase
         View::share('session', new Session($store));
         View::share('errors', []);
         View::share('old', []);
-        $data = $this->service->detail($id);
+        $data = [...$this->service->detail($id), 'disposisi' => []];
 
         $operator = View::render('Agenda::detail', [...$data, 'isAdmin' => false], null);
         $admin = View::render('Agenda::detail', [...$data, 'isAdmin' => true], null);

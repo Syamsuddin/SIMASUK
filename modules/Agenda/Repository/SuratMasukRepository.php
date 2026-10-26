@@ -146,6 +146,28 @@ class SuratMasukRepository
         );
     }
 
+    /**
+     * Mengunci baris surat sampai transaksi selesai, agar perubahan status (disposisi, selesai, batal)
+     * tidak saling menimpa.
+     *
+     * @return array{id:int,tahun:int,no_agenda:int,tgl_terima:string,status:string}|null
+     */
+    public function lockForUpdate(int $id): ?array
+    {
+        return $this->db->fetchOne(
+            'SELECT id, tahun, no_agenda, tgl_terima, status FROM surat_masuk WHERE id = ? FOR UPDATE',
+            [$id]
+        );
+    }
+
+    public function updateStatus(int $id, string $status, ?int $userId, string $now): void
+    {
+        $this->db->execute(
+            'UPDATE surat_masuk SET status = ?, updated_by = ?, updated_at = ? WHERE id = ?',
+            [$status, $userId, $now, $id]
+        );
+    }
+
     public function cancel(int $id, string $reason, ?int $userId, string $now): void
     {
         $this->db->execute(
