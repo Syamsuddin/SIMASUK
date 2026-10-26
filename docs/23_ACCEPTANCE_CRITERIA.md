@@ -32,13 +32,3 @@ Lulus: `OK`, termasuk tes konkurensi dua koneksi. Manual: catat satu surat denga
 vendor/bin/phpunit --filter='DisposisiServiceTest|DisposisiRepositoryTest'
 ```
 Lulus: `OK`.
-
-## F-DASBOR & F-AUDIT halaman (F4)
-- Given 3 disposisi dikirim dengan tenggat kemarin, Then kartu "Lewat tenggat" = 3 dan tabelnya memuat ketiganya.
-- Given surat Diterima tanpa disposisi, Then muncul di "Belum didisposisi".
-- Given Admin membuka `/audit` dan memfilter aksi `surat.cancel`, Then hanya baris pembatalan tampil; `data_json` tidak memuat `password_hash`.
-
-```bash
-vendor/bin/phpunit --filter='DasborServiceTest|AuditRepositoryTest'
-```
-Lulus: `OK`.
