@@ -1,0 +1,36 @@
+{
+  "versi": "1.1",
+  "genesis": "2026-10-26T14:17:23+08:00",
+  "perintah": {
+    "test": "vendor/bin/phpunit",
+    "run": "php -S localhost:8000 -t public",
+    "migrate": "php scripts/migrate.php",
+    "lint": "find app modules scripts public -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "css": "./bin/tailwindcss -i resources/css/app.css -o public/assets/app.css --minify"
+  },
+  "sesi": [
+    {
+      "mulai": "2026-10-26T14:17:24+08:00",
+      "selesai": null,
+      "step": 0,
+      "detik": 0,
+      "tok_est": 0
+    }
+  ],
+  "fitur_aktif": null,
+  "step_berjalan": null,
+  "blueprint": {
+    "sidik_awal": "a569273905ed54f9",
+    "sidik": "a569273905ed54f9",
+    "dokumen": 27,
+    "disegel": "2026-10-26T14:17:23+08:00"
+  },
+  "riwayat_fitur": [],
+  "akumulasi": {
+    "detik": 0,
+    "tok_est": 0,
+    "tok_terukur": 0,
+    "step": 0,
+    "fitur": 0
+  }
+}

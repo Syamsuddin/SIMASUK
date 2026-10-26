@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- Preview desain SIMASUK — dirender dari kerangka VCBD contoh-preview.html v2.4.
+     Hanya blok token :root, teks {ISI}, dan baris komponen yang diisi. -->
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preview Desain — SIMASUK</title>
+<style>
+:root{
+  /* ====== BLOK TOKEN — satu-satunya bagian yang diisi dari tabel 26 ====== */
+  --primer:#166534;        --primer-teks:#FFFFFF;
+  --netral-bg:#F8FAFC;     --netral-permukaan:#FFFFFF;
+  --netral-garis:#E2E8F0;  --teks:#0F172A;  --teks-redup:#64748B;
+  --sukses:#15803D; --peringatan:#B45309; --bahaya:#B91C1C; --info:#1D4ED8;
+  --font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ukuran-basis:14px; --ukuran-h1:20px; --ukuran-h2:16px;
+  --radius:6px; --bayangan:0 1px 2px rgba(15,23,42,.08);
+  --rapat:8px 12px; /* kepadatan sel/field */
+}
+/* ====== DI BAWAH INI BEKU — jangan diubah ====== */
+*{box-sizing:border-box}body{margin:0;font-family:var(--font);font-size:var(--ukuran-basis);color:var(--teks);background:var(--netral-bg)}
+.wrap{max-width:960px;margin:0 auto;padding:20px}
+.banner{background:var(--primer);color:var(--primer-teks);padding:10px 16px;border-radius:var(--radius);font-size:13px;margin-bottom:18px}
+h1{font-size:var(--ukuran-h1);margin:.2em 0}h2{font-size:var(--ukuran-h2);border-bottom:2px solid var(--primer);padding-bottom:4px;margin-top:28px}
+.grid{display:flex;flex-wrap:wrap;gap:10px}
+.sw{width:120px;border:1px solid var(--netral-garis);border-radius:var(--radius);overflow:hidden;background:var(--netral-permukaan)}
+.sw div{height:44px}.sw span{display:block;padding:6px 8px;font-size:11px;color:var(--teks-redup)}
+.btn{border:0;border-radius:var(--radius);padding:var(--rapat);font-size:var(--ukuran-basis);cursor:pointer}
+.btn-primer{background:var(--primer);color:var(--primer-teks)}.btn-garis{background:transparent;border:1px solid var(--primer);color:var(--primer)}
+.btn-bahaya{background:var(--bahaya);color:#fff}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;color:#fff}
+.kartu{background:var(--netral-permukaan);border:1px solid var(--netral-garis);border-radius:var(--radius);box-shadow:var(--bayangan);padding:16px;margin:10px 0}
+label{display:block;font-size:13px;color:var(--teks-redup);margin-bottom:4px}
+input,select{width:100%;max-width:320px;padding:var(--rapat);border:1px solid var(--netral-garis);border-radius:var(--radius);font-size:var(--ukuran-basis)}
+table{width:100%;border-collapse:collapse;background:var(--netral-permukaan);border-radius:var(--radius);overflow:hidden;box-shadow:var(--bayangan)}
+th{background:var(--primer);color:var(--primer-teks);text-align:left;font-size:13px}
+th,td{padding:var(--rapat);border-bottom:1px solid var(--netral-garis)}
+.state{border:1px dashed var(--netral-garis);border-radius:var(--radius);padding:14px;background:var(--netral-permukaan);flex:1;min-width:200px}
+.state b{display:block;font-size:12px;color:var(--teks-redup);letter-spacing:.5px;margin-bottom:8px}
+.muat{height:10px;border-radius:6px;background:linear-gradient(90deg,var(--netral-garis),var(--netral-bg),var(--netral-garis));background-size:200% 100%;animation:sk 1.2s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.err{color:var(--bahaya)}.ok{color:var(--sukses)}
+</style></head><body><div class="wrap">
+
+<div class="banner"><b>PREVIEW</b> — dirender dari tabel token docs/26_UI_CONVENTIONS.md ·
+Jangkar: warna identitas Pemkab HSS [ASUMSI] · 26 Oktober 2026 · Bukan desain final halaman; bila beda dengan 26, 26 menang.</div>
+<h1>SIMASUK — Preview Desain</h1>
+
+<h2>1 · Palet warna (token)</h2>
+<div class="grid">
+<div class="sw"><div style="background:var(--primer)"></div><span>primer #166534</span></div>
+<div class="sw"><div style="background:var(--sukses)"></div><span>sukses #15803D</span></div>
+<div class="sw"><div style="background:var(--peringatan)"></div><span>peringatan #B45309</span></div>
+<div class="sw"><div style="background:var(--bahaya)"></div><span>bahaya #B91C1C</span></div>
+<div class="sw"><div style="background:var(--info)"></div><span>info #1D4ED8</span></div>
+<div class="sw"><div style="background:var(--netral-bg)"></div><span>latar #F8FAFC</span></div>
+</div>
+
+<h2>2 · Tipografi</h2>
+<div class="kartu"><h1 style="margin:0">Judul H1 — Inter 20px</h1>
+<h2 style="margin:.4em 0;border:0">Judul H2</h2>
+<p style="margin:0">Teks basis. <span style="color:var(--teks-redup)">Teks redup untuk keterangan.</span></p></div>
+
+<h2>3 · Komponen inti (dari inventaris 26)</h2>
+<div class="kartu"><div class="grid" style="align-items:center">
+<button class="btn btn-primer">Simpan</button>
+<button class="btn btn-garis">Batal</button>
+<button class="btn btn-bahaya">Batalkan Surat</button>
+<span class="badge" style="background:var(--info)">Diterima</span>
+<span class="badge" style="background:var(--peringatan)">Didisposisi</span>
+<span class="badge" style="background:var(--sukses)">Selesai</span>
+<span class="badge" style="background:var(--bahaya)">Rahasia</span>
+</div>
+<div style="margin-top:14px"><label>Perihal</label><input value="Undangan Rapat Koordinasi Penyusunan HCDP 2027"></div></div>
+
+<h2>4 · Halaman contoh — pola: daftar+filter (Surat Masuk)</h2>
+<div class="kartu"><div class="grid" style="margin-bottom:10px">
+<input placeholder="Cari…" style="max-width:220px"><select style="max-width:160px"><option>Semua status</option></select>
+<button class="btn btn-primer">Filter</button></div>
+<table><tr><th>No. Agenda</th><th>Asal · Perihal</th><th>Status</th><th>Aksi</th></tr>
+<tr><td>0127/2026</td><td>BKD Prov. Kalsel · Undangan Rapat Koordinasi Penyusunan HCDP 2027</td><td><span class="badge" style="background:var(--sukses)">Selesai</span></td><td><button class="btn btn-garis" style="padding:4px 10px">Detail</button></td></tr>
+<tr><td>0128/2026</td><td>Inspektorat Kab. HSS · Permintaan Data Pegawai Pensiun 2027</td><td><span class="badge" style="background:var(--peringatan)">Didisposisi</span></td><td><button class="btn btn-garis" style="padding:4px 10px">Detail</button></td></tr>
+</table></div>
+
+<h2>5 · Empat state wajib</h2>
+<div class="grid">
+<div class="state"><b>KOSONG</b>Belum ada surat masuk. <button class="btn btn-primer" style="padding:6px 12px">+ Catat Surat</button></div>
+<div class="state"><b>MEMUAT</b><div class="muat"></div><div class="muat" style="margin-top:6px;width:70%"></div></div>
+<div class="state"><b>GAGAL</b><span class="err">Gagal memuat data.</span> <button class="btn btn-garis" style="padding:6px 12px">Coba lagi</button></div>
+<div class="state"><b>SUKSES</b><span class="ok">✓ Surat tersimpan.</span></div>
+</div>
+
+</div></body></html>

@@ -1,0 +1,439 @@
+{
+  "app": {
+    "name": "SIMASUK",
+    "description": "Administrasi surat masuk (agenda + disposisi berjenjang) BKPSDM Kabupaten Hulu Sungai Selatan; pelengkap internal SRIKANDI",
+    "type": "greenfield"
+  },
+  "confirmed_at": "2026-10-26T11:13:00+08:00",
+  "requirements": {
+    "goal": "Seluruh surat masuk BKPSDM HSS tercatat digital dengan nomor agenda unik per tahun, berkas scan, dan riwayat disposisi yang bisa dilacak",
+    "success_metric": "[ASUMSI] 100% surat masuk tercatat dengan nomor agenda unik per tahun; satu surat dicatat <= 3 menit",
+    "features": [
+      {
+        "name": "Login + kelola pengguna",
+        "priority": "mvp"
+      },
+      {
+        "name": "Master kode klasifikasi arsip + master unit tujuan disposisi",
+        "priority": "mvp"
+      },
+      {
+        "name": "Agenda surat masuk (nomor otomatis reset 1 Januari) + unggah scan PDF + daftar/cari/filter",
+        "priority": "mvp"
+      },
+      {
+        "name": "Disposisi berjenjang dicatat Operator (tujuan, instruksi, tenggat, riwayat pohon)",
+        "priority": "mvp"
+      },
+      {
+        "name": "Dasbor ringkas",
+        "priority": "mvp"
+      },
+      {
+        "name": "Cetak lembar disposisi PDF",
+        "priority": "later"
+      },
+      {
+        "name": "Notifikasi WhatsApp/Telegram",
+        "priority": "later"
+      },
+      {
+        "name": "Rekap bulanan ekspor xlsx",
+        "priority": "later"
+      },
+      {
+        "name": "Peran Pimpinan login",
+        "priority": "later"
+      }
+    ],
+    "out_of_scope": [
+      "Surat keluar",
+      "Integrasi API SRIKANDI (nomor SRIKANDI hanya teks rujukan)",
+      "TTE / tanda tangan elektronik",
+      "OCR berkas scan",
+      "Multi-OPD / multi-tenant",
+      "Aplikasi mobile native"
+    ],
+    "roles": [
+      {
+        "name": "admin",
+        "can": [
+          "semua kapabilitas operator",
+          "kelola pengguna",
+          "kelola master klasifikasi & unit",
+          "batalkan surat (soft delete)",
+          "lihat log audit"
+        ],
+        "cannot": [
+          "hard delete data",
+          "ubah nomor agenda"
+        ]
+      },
+      {
+        "name": "operator",
+        "can": [
+          "catat & ubah surat",
+          "unggah berkas",
+          "catat disposisi",
+          "tandai selesai",
+          "lihat & cari surat"
+        ],
+        "cannot": [
+          "kelola pengguna",
+          "kelola master",
+          "batalkan/hapus surat",
+          "lihat log audit",
+          "ubah nomor agenda"
+        ]
+      }
+    ],
+    "processes": [
+      {
+        "name": "Pencatatan surat masuk",
+        "happy_path": "Surat diterima -> Operator isi metadata + unggah PDF -> nomor agenda terbit -> status Diterima",
+        "failure": "PDF tidak valid/>10 MB; dugaan surat ganda (no_surat + asal + tgl_surat sama); tabrakan nomor agenda (dicegah kunci baris)"
+      },
+      {
+        "name": "Disposisi berjenjang",
+        "happy_path": "Pimpinan menulis di lembar kertas -> Operator input disposisi (tujuan unit, instruksi, tenggat) -> sub-disposisi dari disposisi induk -> status surat Didisposisi -> Operator tandai Selesai",
+        "failure": "Tujuan unit nonaktif; tenggat sebelum tgl_terima; disposisi pada surat Dibatalkan/Selesai"
+      }
+    ],
+    "entities": [
+      {
+        "name": "users",
+        "key_attrs": [
+          "username",
+          "password_hash",
+          "role",
+          "is_active"
+        ],
+        "relations": []
+      },
+      {
+        "name": "unit_kerja",
+        "key_attrs": [
+          "nama",
+          "jabatan_pimpinan",
+          "parent_id",
+          "is_active"
+        ],
+        "relations": [
+          "self parent"
+        ]
+      },
+      {
+        "name": "klasifikasi_arsip",
+        "key_attrs": [
+          "kode",
+          "uraian",
+          "is_active"
+        ],
+        "relations": []
+      },
+      {
+        "name": "surat_masuk",
+        "key_attrs": [
+          "tahun",
+          "no_agenda",
+          "tgl_terima",
+          "no_surat",
+          "tgl_surat",
+          "asal",
+          "perihal",
+          "sifat",
+          "klasifikasi_id",
+          "no_srikandi",
+          "status"
+        ],
+        "relations": [
+          "belongsTo klasifikasi_arsip",
+          "hasMany berkas_surat",
+          "hasMany disposisi"
+        ]
+      },
+      {
+        "name": "berkas_surat",
+        "key_attrs": [
+          "surat_id",
+          "path",
+          "nama_asli",
+          "ukuran",
+          "sha256"
+        ],
+        "relations": [
+          "belongsTo surat_masuk"
+        ]
+      },
+      {
+        "name": "disposisi",
+        "key_attrs": [
+          "surat_id",
+          "parent_id",
+          "unit_tujuan_id",
+          "instruksi",
+          "tenggat",
+          "status"
+        ],
+        "relations": [
+          "belongsTo surat_masuk",
+          "self parent",
+          "belongsTo unit_kerja"
+        ]
+      },
+      {
+        "name": "agenda_counter",
+        "key_attrs": [
+          "tahun",
+          "last_no"
+        ],
+        "relations": []
+      },
+      {
+        "name": "log_audit",
+        "key_attrs": [
+          "user_id",
+          "aksi",
+          "entitas",
+          "entitas_id",
+          "data_json",
+          "created_at"
+        ],
+        "relations": [
+          "belongsTo users"
+        ]
+      }
+    ],
+    "sensitive_data": [
+      "Isi & berkas surat bersifat Rahasia",
+      "password pengguna (argon2id)",
+      "berkas scan di luar webroot"
+    ],
+    "stack": {
+      "backend": "PHP 8.3 native modular",
+      "frontend": "Template PHP + Tailwind CSS v4 (Standalone CLI)",
+      "db": "MySQL 8.0",
+      "versions": {
+        "php": "8.3",
+        "mysql": "8.0",
+        "tailwindcss": "4.x standalone",
+        "phpunit": "11"
+      },
+      "forbidden": [
+        "framework PHP apa pun",
+        "jQuery",
+        "Tailwind via CDN di produksi",
+        "Node.js di server produksi",
+        "ORM"
+      ],
+      "framework": {
+        "backend": "none",
+        "frontend": "none"
+      }
+    },
+    "ui": {
+      "enabled": true,
+      "anchor": "Warna identitas Pemkab HSS [ASUMSI: token usulan Claude, belum diekstrak dari logo]"
+    },
+    "split": {
+      "enabled": false,
+      "role": "",
+      "contract_path": "",
+      "contract_version": ""
+    },
+    "architecture": {
+      "pattern": "Monolit modular native: front controller + router array + modul per domain (Controller/Service/Repository/views)",
+      "integrations": []
+    },
+    "environment": {
+      "os": "Ubuntu 24.04 + Nginx + PHP 8.3-FPM + MySQL 8.0",
+      "services": [
+        "MySQL"
+      ],
+      "commands": {
+        "run": "php -S localhost:8000 -t public",
+        "test": "vendor/bin/phpunit",
+        "migrate": "php scripts/migrate.php",
+        "css": "./bin/tailwindcss -i resources/css/app.css -o public/assets/app.css --minify"
+      }
+    },
+    "testing": "PHPUnit: unit test Service (penomoran, validasi, pohon disposisi) + integrasi Repository dengan DB uji simasuk_test",
+    "security": [
+      "CSRF token setiap POST",
+      "sesi httponly+samesite+regenerasi id",
+      "PDO prepared statement",
+      "escape output e()",
+      "PDF dicek finfo, maks 10 MB, nama acak, di luar webroot",
+      "otorisasi per peran di setiap rute",
+      "rahasia di .env"
+    ],
+    "acceptance": "Kriteria per fitur di 23 + tes hijau + tanpa regresi + empat state UI",
+    "definition_of_done": "Kriteria 23 terpenuhi, phpunit hijau, tanpa regresi, konvensi 12, tak melanggar 20/21, CSS dibangun ulang bila view berubah",
+    "change_policy": {
+      "git": "Branch per fitur; dilarang commit langsung ke main",
+      "irreversible_ops": [
+        "migrasi destruktif",
+        "mengubah/mengatur ulang nomor agenda atau agenda_counter",
+        "pembatalan surat",
+        "hapus berkas",
+        "rilis produksi"
+      ],
+      "release_steps": [
+        "tes hijau",
+        "build CSS",
+        "backup DB + storage",
+        "migrasi tervalidasi",
+        "deploy",
+        "smoke test",
+        "rollback plan"
+      ]
+    }
+  },
+  "canonical_owners": {
+    "product_value": "00/01",
+    "features": "01",
+    "scope": "02",
+    "roadmap": "03",
+    "domain_terms": "04",
+    "roles": "05",
+    "business_process": "06",
+    "schema": "07",
+    "architecture": "08",
+    "stack": "09",
+    "dev_env": "10",
+    "commands": "11",
+    "project_structure": "12",
+    "testing": "13",
+    "error_handling": "14",
+    "observability": "15",
+    "landmines": "16",
+    "repair_rules": "18",
+    "guardrails": "20",
+    "security": "21",
+    "change_policy": "22",
+    "definition_of_done": "24",
+    "ui": "26"
+  },
+  "referenced_by": {
+    "01": [
+      "02",
+      "03",
+      "23"
+    ],
+    "02": [
+      "03",
+      "17",
+      "22",
+      "23",
+      "CLAUDE"
+    ],
+    "03": [],
+    "04": [
+      "06",
+      "07"
+    ],
+    "05": [
+      "06",
+      "21",
+      "23",
+      "26"
+    ],
+    "06": [
+      "23"
+    ],
+    "07": [
+      "06",
+      "16",
+      "18",
+      "21",
+      "23"
+    ],
+    "08": [
+      "12"
+    ],
+    "09": [
+      "08",
+      "10",
+      "CLAUDE"
+    ],
+    "10": [],
+    "11": [
+      "10",
+      "13",
+      "16",
+      "23",
+      "25",
+      "CLAUDE"
+    ],
+    "12": [
+      "CLAUDE",
+      "26"
+    ],
+    "13": [
+      "23",
+      "24"
+    ],
+    "14": [
+      "16",
+      "26"
+    ],
+    "15": [
+      "16"
+    ],
+    "16": [
+      "18"
+    ],
+    "18": [
+      "17"
+    ],
+    "20": [
+      "24",
+      "CLAUDE"
+    ],
+    "21": [
+      "06",
+      "20",
+      "22",
+      "23"
+    ],
+    "22": [
+      "25",
+      "26",
+      "CLAUDE"
+    ],
+    "24": [
+      "23",
+      "25"
+    ],
+    "26": [
+      "23",
+      "CLAUDE"
+    ]
+  },
+  "collapsed": [
+    "17",
+    "19"
+  ],
+  "landmines": [
+    "Tailwind standalone hanya memindai path di @source; class di view baru yang tak tercakup tidak masuk app.css",
+    "Batas unggah ada di tiga tempat: php.ini upload_max_filesize/post_max_size, Nginx client_max_body_size, dan validasi aplikasi",
+    "Nomor agenda wajib lewat agenda_counter + SELECT ... FOR UPDATE dalam transaksi; MAX(no_agenda)+1 bertabrakan saat dua operator menyimpan bersamaan",
+    "Zona waktu: PHP date.timezone dan sesi MySQL time_zone wajib +08:00 (WITA); pergantian tahun agenda ditentukan tgl_terima, bukan NOW() server"
+  ],
+  "assumptions": [
+    "Token warna identitas HSS adalah usulan Claude, belum diekstrak dari logo resmi",
+    "Sifat surat: Biasa, Segera, Sangat Segera, Rahasia",
+    "Status surat: Diterima -> Didisposisi -> Selesai; plus Dibatalkan (soft delete oleh Admin)",
+    "Parser .env ditulis sendiri tanpa pustaka",
+    "Roadmap empat slice: F1 fondasi+auth+master, F2 agenda+berkas, F3 disposisi, F4 dasbor+pencarian lanjut",
+    "Metrik sukses 100% tercatat & <= 3 menit per surat",
+    "Maks 5 berkas PDF aktif per surat, masing-masing <= 10 MB",
+    "Akun DB aplikasi hanya SELECT/INSERT/UPDATE; migrasi memakai akun terpisah di produksi"
+  ],
+  "open_questions": [
+    "Kode hex resmi Pemkab HSS",
+    "Isi awal master kode klasifikasi arsip (mengikuti pedoman yang dipakai BKPSDM)",
+    "Format cetak lembar disposisi (fase berikutnya)"
+  ],
+  "archive_pattern": "23-*.md"
+}
