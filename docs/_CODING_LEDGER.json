@@ -19,9 +19,9 @@
     {
       "mulai": "2026-10-26T15:09:52+08:00",
       "selesai": null,
-      "step": 1,
-      "detik": 1739,
-      "tok_est": 2059
+      "step": 7,
+      "detik": 2569,
+      "tok_est": 58119
     }
   ],
   "step_berjalan": null,
@@ -329,13 +329,192 @@
         "docs/23_ACCEPTANCE_CRITERIA.md (F-AUTH, F-MASTER diarsipkan)"
       ],
       "selesai": "2026-10-26T15:17:16+08:00"
+    },
+    {
+      "fitur": "F2 Agenda",
+      "rute": "Fitur baru (vertical slice)",
+      "mulai": "2026-10-26T15:20:17+08:00",
+      "rencana": [
+        "app/Core/FileStore.php",
+        "app/Core/Validator.php",
+        "bootstrap/app.php",
+        "config/routes.php",
+        "modules/Agenda/Repository/AgendaCounterRepository.php",
+        "modules/Agenda/Repository/SuratMasukRepository.php",
+        "modules/Agenda/Repository/BerkasSuratRepository.php",
+        "modules/Agenda/Service/AgendaNumberService.php",
+        "modules/Agenda/Service/SuratMasukService.php",
+        "modules/Agenda/Controller/SuratMasukController.php",
+        "modules/Agenda/Controller/BerkasController.php",
+        "modules/Agenda/views/index.php",
+        "modules/Agenda/views/form.php",
+        "modules/Agenda/views/detail.php",
+        "resources/views/components/field.php",
+        "resources/views/components/confirm-dialog.php",
+        "resources/views/components/sifat.php",
+        "resources/views/layout/app.php",
+        "public/assets/app.css",
+        "tests/Integration/AgendaNumberServiceTest.php",
+        "tests/Integration/SuratMasukServiceTest.php",
+        "tests/Integration/FileStoreTest.php",
+        "tests/Integration/SuratMasukRepositoryTest.php",
+        "tests/Unit/RoleMiddlewareTest.php",
+        "docs/23_ACCEPTANCE_CRITERIA.md",
+        "docs/03_ROADMAP.md",
+        "docs/_archive/23-f2-agenda.md",
+        "docs/_CODING_LEDGER.json",
+        "docs/_TOKEN_LEDGER.json"
+      ],
+      "total_step": 0,
+      "step": [
+        {
+          "no": 1,
+          "nama": "Repository/akses data",
+          "mulai": "2026-10-26T15:20:17+08:00",
+          "selesai": "2026-10-26T15:21:44+08:00",
+          "detik": 88,
+          "tok_est": 11669,
+          "muat": [
+            "docs/07_DATA_MODEL.md",
+            "docs/12_PROJECT_STRUCTURE.md",
+            "docs/21_SECURITY_RULES.md",
+            "app/Core/Database.php",
+            "app/Core/FileStore.php",
+            "app/Core/Validator.php",
+            "modules/Agenda/Repository/SuratMasukRepository.php",
+            "modules/Agenda/Repository/BerkasSuratRepository.php",
+            "modules/Agenda/Repository/AgendaCounterRepository.php",
+            "modules/Master/Repository/KlasifikasiRepository.php"
+          ]
+        },
+        {
+          "no": 2,
+          "nama": "Service/logika domain",
+          "mulai": "2026-10-26T15:21:44+08:00",
+          "selesai": "2026-10-26T15:23:13+08:00",
+          "detik": 90,
+          "tok_est": 7772,
+          "muat": [
+            "docs/06_BUSINESS_PROCESS.md",
+            "docs/05_USER_ROLE.md",
+            "docs/14_ERROR_HANDLING.md",
+            "modules/Agenda/Service/SuratMasukService.php",
+            "modules/Agenda/Service/AgendaNumberService.php",
+            "modules/Master/Service/KlasifikasiService.php",
+            "app/Core/Audit.php"
+          ]
+        },
+        {
+          "no": 3,
+          "nama": "Endpoint/controller/rute",
+          "mulai": "2026-10-26T15:23:13+08:00",
+          "selesai": "2026-10-26T15:24:20+08:00",
+          "detik": 68,
+          "tok_est": 6967,
+          "muat": [
+            "app/Core/Router.php",
+            "app/Core/App.php",
+            "app/Core/Request.php",
+            "app/Core/Response.php",
+            "config/routes.php",
+            "bootstrap/app.php",
+            "modules/Agenda/Controller/SuratMasukController.php",
+            "modules/Agenda/Controller/BerkasController.php",
+            "modules/Master/Controller/KlasifikasiController.php"
+          ]
+        },
+        {
+          "no": 4,
+          "nama": "UI + empat state",
+          "mulai": "2026-10-26T15:24:21+08:00",
+          "selesai": "2026-10-26T15:26:04+08:00",
+          "detik": 104,
+          "tok_est": 13537,
+          "muat": [
+            "docs/26_UI_CONVENTIONS.md",
+            "resources/views/components/field.php",
+            "resources/views/components/badge.php",
+            "resources/views/components/filter-bar.php",
+            "resources/views/components/table.php",
+            "resources/views/components/pagination.php",
+            "resources/views/components/confirm-dialog.php",
+            "resources/views/components/button.php",
+            "resources/views/components/card.php",
+            "resources/views/components/sifat.php",
+            "resources/views/components/empty-state.php",
+            "resources/views/layout/app.php",
+            "public/assets/app.js",
+            "modules/Master/views/klasifikasi_index.php",
+            "modules/Master/views/klasifikasi_form.php",
+            "modules/Agenda/views/index.php",
+            "modules/Agenda/views/form.php",
+            "modules/Agenda/views/detail.php"
+          ]
+        },
+        {
+          "no": 5,
+          "nama": "Tes",
+          "mulai": "2026-10-26T15:26:05+08:00",
+          "selesai": "2026-10-26T15:30:03+08:00",
+          "detik": 238,
+          "tok_est": 14861,
+          "muat": [
+            "docs/13_TESTING.md",
+            "tests/Integration/IntegrationTestCase.php",
+            "tests/Unit/RoleMiddlewareTest.php",
+            "tests/Integration/KlasifikasiServiceTest.php",
+            "tests/Integration/FileStoreTest.php",
+            "tests/Integration/AgendaNumberServiceTest.php",
+            "tests/Integration/SuratMasukRepositoryTest.php",
+            "tests/Integration/SuratMasukServiceTest.php"
+          ]
+        },
+        {
+          "no": 6,
+          "nama": "Gerbang fitur",
+          "mulai": "2026-10-26T15:30:03+08:00",
+          "selesai": "2026-10-26T15:34:04+08:00",
+          "detik": 242,
+          "tok_est": 1254,
+          "muat": [
+            "docs/23_ACCEPTANCE_CRITERIA.md",
+            "docs/03_ROADMAP.md"
+          ]
+        }
+      ],
+      "detik": 830,
+      "tok_est": 56060,
+      "deviasi": [
+        "modules/Agenda/Repository/AgendaCounterRepository.php, AgendaNumberService.php, SuratMasukRepository.php — berkas tak bertuan (dibuat 15:08 di luar sesi), diadopsi ke rencana F2 setelah ditinjau sesuai docs/08/12",
+        "app/Core/Validator.php — tambah konstanta pesan berkas (docs/14: pesan validasi di Core\\Validator)"
+      ],
+      "warn_dilewati": [
+        "S1: kriteria F-AGENDA dibuktikan manual lewat filter phpunit (46 tes OK) + smoke HTTP; butir manual 3 menit & 768px BELUM dibuktikan, blok 23 tidak diarsipkan",
+        "S7: modules/Disposisi/Repository/DisposisiRepository.php tak bertuan, untuk F3, tidak di-commit",
+        "S8: skrip tak mengenali view .php; empat state dicek manual (empty-state, skeleton, alert/errors, toast)"
+      ],
+      "asumsi": [
+        "Tanggal terima tidak boleh melewati hari ini — docs/06 diam; mencegah counter tahun depan terbuat karena salah ketik",
+        "Ubah metadata termasuk F-AGENDA (matriks 05 + peta halaman 26); tgl_terima boleh diubah hanya di tahun agenda yang sama karena tahun immutable (07)",
+        "Pencarian kata memakai LIKE (no_surat, asal, perihal, no_srikandi) + nomor agenda; indeks FULLTEXT 07 belum dipakai — evaluasi di F4",
+        "Unduh berkas tidak dicatat log_audit (docs/21 tak mewajibkan)"
+      ],
+      "dokumen_diperbarui": [
+        "docs/03_ROADMAP.md (status F2)"
+      ],
+      "ditunda": [
+        "Filter rentang tanggal terima — F4 menurut 03",
+        "Lepas berkas (Admin) dan tambah berkas ke surat lama — ada di 05/26 tapi tak ada kriteria 23 maupun fase roadmap; perlu keputusan",
+        "Blok F-AGENDA di 23 diarsipkan setelah uji manual lulus"
+      ],
+      "selesai": "2026-10-26T15:34:04+08:00"
     }
   ],
   "akumulasi": {
-    "detik": 2901,
-    "tok_est": 64339,
+    "detik": 3731,
+    "tok_est": 120399,
     "tok_terukur": 0,
-    "step": 7,
-    "fitur": 1
+    "step": 13,
+    "fitur": 2
   }
 }

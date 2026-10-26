@@ -43,6 +43,7 @@ $nav = static function (string $href, string $label, string $ikon, bool $active)
     </div>
     <nav class="flex flex-1 flex-col gap-1 overflow-y-auto p-3" aria-label="Navigasi utama">
         <?= $nav('/', 'Dasbor', 'home', nav_active('/')) ?>
+        <?= $nav('/surat-masuk', 'Surat Masuk', 'inbox', nav_active('/surat-masuk')) ?>
         <?php if ($isAdmin): ?>
         <p class="mt-4 px-3 pb-1 text-xs font-medium text-ink-muted">Pengaturan</p>
         <?= $nav('/pengguna', 'Pengguna', 'users', nav_active('/pengguna')) ?>

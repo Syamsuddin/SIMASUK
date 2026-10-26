@@ -6,6 +6,7 @@ use App\Core\App;
 use App\Core\Database;
 use App\Core\Env;
 use App\Core\ErrorHandler;
+use App\Core\FileStore;
 use App\Core\Logger;
 use App\Core\Router;
 use App\Core\Session;
@@ -43,5 +44,6 @@ $app->instance(Logger::class, $logger);
 $app->instance(ErrorHandler::class, $errorHandler);
 $app->instance(Session::class, $session);
 $app->set(Database::class, static fn (): Database => Database::fromEnv());
+$app->set(FileStore::class, static fn (): FileStore => FileStore::fromEnv($root));
 
 return $app;

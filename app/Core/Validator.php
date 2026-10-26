@@ -20,6 +20,11 @@ final class Validator
     public const MSG_USERNAME = 'Hanya huruf kecil, angka, titik, dan garis bawah.';
     public const MSG_SAME = 'Konfirmasi tidak cocok.';
     public const MSG_CONTROL = 'Mengandung karakter yang tidak diizinkan.';
+    public const MSG_BERKAS_WAJIB = 'Pilih minimal satu berkas PDF.';
+    public const MSG_BERKAS_JUMLAH = 'Maksimal :n berkas PDF per surat.';
+    public const MSG_BERKAS_PDF = 'Berkas harus PDF.';
+    public const MSG_BERKAS_UKURAN = 'Ukuran berkas maks :n MB.';
+    public const MSG_BERKAS_GAGAL = 'Berkas gagal diunggah. Pilih ulang lalu simpan kembali.';
 
     /**
      * @param array<string,mixed> $input

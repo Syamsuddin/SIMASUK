@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Modules\Agenda\Controller\BerkasController;
+use Modules\Agenda\Controller\SuratMasukController;
 use Modules\Auth\Controller\AuthController;
 use Modules\Dasbor\Controller\DasborController;
 use Modules\Master\Controller\KlasifikasiController;
@@ -20,6 +22,15 @@ return [
     ['POST', '/ubah-password', [AuthController::class, 'updatePassword'], ['auth']],
 
     ['GET', '/', [DasborController::class, 'index'], ['auth']],
+
+    ['GET', '/surat-masuk', [SuratMasukController::class, 'index'], ['auth']],
+    ['GET', '/surat-masuk/baru', [SuratMasukController::class, 'create'], ['auth']],
+    ['POST', '/surat-masuk', [SuratMasukController::class, 'store'], ['auth']],
+    ['GET', '/surat-masuk/{id}', [SuratMasukController::class, 'show'], ['auth']],
+    ['GET', '/surat-masuk/{id}/ubah', [SuratMasukController::class, 'edit'], ['auth']],
+    ['POST', '/surat-masuk/{id}/ubah', [SuratMasukController::class, 'update'], ['auth']],
+    ['POST', '/surat-masuk/{id}/batalkan', [SuratMasukController::class, 'cancel'], $admin],
+    ['GET', '/berkas/{id}', [BerkasController::class, 'download'], ['auth']],
 
     ['GET', '/pengguna', [PenggunaController::class, 'index'], $admin],
     ['GET', '/pengguna/baru', [PenggunaController::class, 'create'], $admin],

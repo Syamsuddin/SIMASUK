@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Field formulir (docs/26): text | password | date | number | select | textarea | checkbox.
+ * Field formulir (docs/26): text | password | date | number | select | textarea | checkbox | file (PDF, multi).
  * Selalu berlabel; pesan error tampil di bawah input. Nilai lama (old()) diutamakan bila ada.
  *
  * @var string $name
@@ -16,16 +16,18 @@ declare(strict_types=1);
  * @var bool|null $required
  * @var string|null $autocomplete
  * @var bool|null $autofocus
+ * @var bool|null $multiple file: kirim sebagai $name[]; pesan error tetap di kunci $name
  */
 $type ??= 'text';
 $id = 'f-' . preg_replace('/[^a-z0-9_-]/i', '-', $name);
 $isPassword = $type === 'password';
-$current = $isPassword ? '' : old($name, (string) ($value ?? ''));
+$inputName = $type === 'file' && ($multiple ?? false) ? $name . '[]' : $name;
+$current = $isPassword || $type === 'file' ? '' : old($name, (string) ($value ?? ''));
 $err = error($name);
 $describedBy = trim(($hint ?? null) !== null ? $id . '-hint' : '') . ($err !== null ? ' ' . $id . '-err' : '');
 $control = 'w-full rounded-md border bg-surface px-3 text-sm text-ink placeholder:text-ink-muted '
     . ($err !== null ? 'border-danger' : 'border-line');
-$common = 'id="' . e($id) . '" name="' . e($name) . '"'
+$common = 'id="' . e($id) . '" name="' . e($inputName) . '"'
     . (($required ?? false) ? ' required' : '')
     . (($autofocus ?? false) ? ' autofocus' : '')
     . (isset($autocomplete) ? ' autocomplete="' . e($autocomplete) . '"' : '')
@@ -47,6 +49,8 @@ $common = 'id="' . e($id) . '" name="' . e($name) . '"'
         <option value="<?= e($optValue) ?>"<?= (string) $optValue === $current ? ' selected' : '' ?>><?= e($optLabel) ?></option>
         <?php endforeach ?>
     </select>
+    <?php elseif ($type === 'file'): ?>
+    <input type="file" accept="application/pdf,.pdf" class="block w-full text-sm text-ink file:mr-3 file:h-9 file:cursor-pointer file:rounded-md file:border file:border-line file:bg-surface-muted file:px-3 file:text-sm file:font-medium file:text-ink" <?= $common ?><?= ($multiple ?? false) ? ' multiple' : '' ?>>
     <?php elseif ($type === 'textarea'): ?>
     <textarea rows="3" class="py-2 <?= e($control) ?>" <?= $common ?>><?= e($current) ?></textarea>
     <?php else: ?>

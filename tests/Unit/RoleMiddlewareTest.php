@@ -61,6 +61,7 @@ final class RoleMiddlewareTest extends TestCase
         yield 'simpan klasifikasi' => ['POST', '/master/klasifikasi'];
         yield 'master unit' => ['GET', '/master/unit'];
         yield 'ubah unit' => ['POST', '/master/unit/2/ubah'];
+        yield 'batalkan surat' => ['POST', '/surat-masuk/5/batalkan'];
     }
 
     /** @dataProvider adminRoutes */
