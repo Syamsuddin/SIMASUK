@@ -13,6 +13,7 @@ declare(strict_types=1);
  * @var array<int|string,string>|null $options nilai => label (select)
  * @var string|null $placeholder pilihan kosong untuk select / placeholder input
  * @var string|null $hint
+ * @var string|null $error pesan dari pemanggil (filter GET); bila null dipakai pesan flash error($name)
  * @var bool|null $required
  * @var string|null $autocomplete
  * @var bool|null $autofocus
@@ -23,7 +24,7 @@ $id = 'f-' . preg_replace('/[^a-z0-9_-]/i', '-', $name);
 $isPassword = $type === 'password';
 $inputName = $type === 'file' && ($multiple ?? false) ? $name . '[]' : $name;
 $current = $isPassword || $type === 'file' ? '' : old($name, (string) ($value ?? ''));
-$err = error($name);
+$err = $error ?? error($name);
 $describedBy = trim(($hint ?? null) !== null ? $id . '-hint' : '') . ($err !== null ? ' ' . $id . '-err' : '');
 $control = 'w-full rounded-md border bg-surface px-3 text-sm text-ink placeholder:text-ink-muted '
     . ($err !== null ? 'border-danger' : 'border-line');

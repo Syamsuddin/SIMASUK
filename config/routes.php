@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Agenda\Controller\BerkasController;
 use Modules\Agenda\Controller\SuratMasukController;
+use Modules\Audit\Controller\AuditController;
 use Modules\Auth\Controller\AuthController;
 use Modules\Dasbor\Controller\DasborController;
 use Modules\Disposisi\Controller\DisposisiController;
@@ -60,4 +61,6 @@ return [
     ['POST', '/master/unit/{id}/ubah', [UnitKerjaController::class, 'update'], $admin],
     ['POST', '/master/unit/{id}/nonaktifkan', [UnitKerjaController::class, 'deactivate'], $admin],
     ['POST', '/master/unit/{id}/aktifkan', [UnitKerjaController::class, 'activate'], $admin],
+
+    ['GET', '/audit', [AuditController::class, 'index'], $admin],
 ];

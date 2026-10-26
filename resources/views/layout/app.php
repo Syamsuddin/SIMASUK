@@ -49,6 +49,7 @@ $nav = static function (string $href, string $label, string $ikon, bool $active)
         <?= $nav('/pengguna', 'Pengguna', 'users', nav_active('/pengguna')) ?>
         <?= $nav('/master/klasifikasi', 'Klasifikasi Arsip', 'folder', nav_active('/master/klasifikasi')) ?>
         <?= $nav('/master/unit', 'Unit Kerja', 'building-office', nav_active('/master/unit')) ?>
+        <?= $nav('/audit', 'Log Audit', 'clipboard-document-list', nav_active('/audit')) ?>
         <?php endif ?>
     </nav>
 </aside>

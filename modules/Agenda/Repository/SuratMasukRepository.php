@@ -74,7 +74,8 @@ class SuratMasukRepository
     }
 
     /**
-     * @param array{q?:string,tahun?:string,status?:string,sifat?:string} $filter
+     * @param array{q?:string,tahun?:string,status?:string,sifat?:string,dari?:string,sampai?:string} $filter
+     *   dari/sampai = rentang tgl_terima Y-m-d, inklusif
      * @return array{rows:list<array<string,mixed>>,total:int}
      */
     public function paginate(array $filter, int $page, int $perPage): array
@@ -104,6 +105,14 @@ class SuratMasukRepository
                 $where[] = $column . ' = ?';
                 $params[] = $key === 'tahun' ? (int) $filter[$key] : $filter[$key];
             }
+        }
+        if (($filter['dari'] ?? '') !== '') {
+            $where[] = 's.tgl_terima >= ?';
+            $params[] = $filter['dari'];
+        }
+        if (($filter['sampai'] ?? '') !== '') {
+            $where[] = 's.tgl_terima <= ?';
+            $params[] = $filter['sampai'];
         }
         $whereSql = $where === [] ? '' : ' WHERE ' . implode(' AND ', $where);
 

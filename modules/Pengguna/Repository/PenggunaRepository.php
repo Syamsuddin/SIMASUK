@@ -130,4 +130,14 @@ class PenggunaRepository
     {
         return (int) $this->db->fetchValue('SELECT COUNT(*) FROM users');
     }
+
+    /** @return array<int,string> id => "Nama (username)", termasuk akun nonaktif; untuk filter log audit */
+    public function options(): array
+    {
+        $out = [];
+        foreach ($this->db->fetchAll('SELECT id, username, nama FROM users ORDER BY nama ASC, id ASC') as $r) {
+            $out[(int) $r['id']] = $r['nama'] . ' (' . $r['username'] . ')';
+        }
+        return $out;
+    }
 }

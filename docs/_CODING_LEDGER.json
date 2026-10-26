@@ -29,22 +29,38 @@
       "step": 6,
       "detik": 1124,
       "tok_est": 68563
+    },
+    {
+      "mulai": "2026-10-26T16:02:34+08:00",
+      "selesai": null,
+      "step": 4,
+      "detik": 273,
+      "tok_est": 40209
     }
   ],
-  "step_berjalan": null,
+  "step_berjalan": {
+    "no": 5,
+    "nama": "Tes",
+    "mulai": "2026-10-26T16:10:50+08:00"
+  },
   "blueprint": {
     "sidik_awal": "a569273905ed54f9",
-    "sidik": "7b8b832998d93adb",
+    "sidik": "e3c6c325bebafb43",
     "dokumen": 27,
-    "disegel": "2026-10-26T15:36:56+08:00",
-    "sidik_sebelumnya": "a569273905ed54f9",
+    "disegel": "2026-10-26T16:02:33+08:00",
     "riwayat": [
       {
         "dari": "a569273905ed54f9",
         "ke": "7b8b832998d93adb",
         "pada": "2026-10-26T15:36:56+08:00"
+      },
+      {
+        "dari": "7b8b832998d93adb",
+        "ke": "e3c6c325bebafb43",
+        "pada": "2026-10-26T16:02:33+08:00"
       }
-    ]
+    ],
+    "sidik_sebelumnya": "7b8b832998d93adb"
   },
   "riwayat_fitur": [
     {
@@ -691,10 +707,134 @@
     }
   ],
   "akumulasi": {
-    "detik": 4855,
-    "tok_est": 188962,
+    "detik": 5128,
+    "tok_est": 229171,
     "tok_terukur": 0,
-    "step": 19,
+    "step": 23,
     "fitur": 3
+  },
+  "fitur_aktif": {
+    "fitur": "F4 Dasbor",
+    "rute": "Fitur baru (vertical slice)",
+    "mulai": "2026-10-26T16:06:20+08:00",
+    "rencana": [
+      "modules/Dasbor/Controller/DasborController.php",
+      "modules/Dasbor/Service/DasborService.php",
+      "modules/Dasbor/Repository/DasborRepository.php",
+      "modules/Dasbor/views/index.php",
+      "modules/Audit/Controller/AuditController.php",
+      "modules/Audit/Service/AuditService.php",
+      "modules/Audit/Repository/AuditRepository.php",
+      "modules/Audit/views/index.php",
+      "modules/Pengguna/Repository/PenggunaRepository.php",
+      "modules/Agenda/Repository/SuratMasukRepository.php",
+      "modules/Agenda/Service/SuratMasukService.php",
+      "modules/Agenda/views/index.php",
+      "config/routes.php",
+      "resources/views/components/stat.php",
+      "resources/views/components/field.php",
+      "resources/views/components/icons/clipboard-document-list.php",
+      "resources/views/layout/app.php",
+      "public/assets/app.css",
+      "tests/Integration/DasborServiceTest.php",
+      "tests/Integration/AuditRepositoryTest.php",
+      "tests/Integration/AuditServiceTest.php",
+      "tests/Integration/SuratMasukRepositoryTest.php",
+      "tests/Integration/SuratMasukServiceTest.php",
+      "tests/Unit/RoleMiddlewareTest.php",
+      "docs/03_ROADMAP.md",
+      "docs/23_ACCEPTANCE_CRITERIA.md",
+      "docs/_archive/23-f4-dasbor.md",
+      "docs/_CODING_LEDGER.json",
+      "docs/_TOKEN_LEDGER.json",
+      "app/Core/Validator.php"
+    ],
+    "total_step": 0,
+    "step": [
+      {
+        "no": 1,
+        "nama": "Repository/akses data",
+        "mulai": "2026-10-26T16:06:20+08:00",
+        "selesai": "2026-10-26T16:06:56+08:00",
+        "detik": 37,
+        "tok_est": 12445,
+        "muat": [
+          "docs/01_PRD.md",
+          "docs/02_SCOPE.md",
+          "docs/05_USER_ROLE.md",
+          "docs/06_BUSINESS_PROCESS.md",
+          "docs/07_DATA_MODEL.md",
+          "docs/11_COMMANDS.md",
+          "docs/13_TESTING.md",
+          "docs/23_ACCEPTANCE_CRITERIA.md",
+          "docs/03_ROADMAP.md",
+          "modules/Dasbor/Repository/DasborRepository.php",
+          "modules/Audit/Repository/AuditRepository.php",
+          "modules/Agenda/Repository/SuratMasukRepository.php",
+          "modules/Pengguna/Repository/PenggunaRepository.php",
+          "modules/Disposisi/Repository/DisposisiRepository.php"
+        ]
+      },
+      {
+        "no": 2,
+        "nama": "Service/logika domain",
+        "mulai": "2026-10-26T16:06:56+08:00",
+        "selesai": "2026-10-26T16:08:39+08:00",
+        "detik": 104,
+        "tok_est": 8010,
+        "muat": [
+          "docs/14_ERROR_HANDLING.md",
+          "app/Core/Validator.php",
+          "app/Core/Audit.php",
+          "modules/Dasbor/Service/DasborService.php",
+          "modules/Audit/Service/AuditService.php",
+          "modules/Agenda/Service/SuratMasukService.php"
+        ]
+      },
+      {
+        "no": 3,
+        "nama": "Endpoint/controller/rute",
+        "mulai": "2026-10-26T16:08:39+08:00",
+        "selesai": "2026-10-26T16:09:03+08:00",
+        "detik": 25,
+        "tok_est": 3331,
+        "muat": [
+          "modules/Dasbor/Controller/DasborController.php",
+          "modules/Audit/Controller/AuditController.php",
+          "config/routes.php",
+          "modules/Agenda/Controller/SuratMasukController.php",
+          "app/Core/View.php"
+        ]
+      },
+      {
+        "no": 4,
+        "nama": "UI + empat state",
+        "mulai": "2026-10-26T16:09:03+08:00",
+        "selesai": "2026-10-26T16:10:49+08:00",
+        "detik": 107,
+        "tok_est": 16423,
+        "muat": [
+          "docs/26_UI_CONVENTIONS.md",
+          "resources/css/app.css",
+          "resources/views/components/card.php",
+          "resources/views/components/skeleton.php",
+          "resources/views/components/filter-bar.php",
+          "resources/views/components/table.php",
+          "resources/views/components/empty-state.php",
+          "resources/views/components/button.php",
+          "resources/views/components/pagination.php",
+          "resources/views/components/field.php",
+          "resources/views/components/stat.php",
+          "resources/views/components/icons/clipboard-document-list.php",
+          "resources/views/layout/app.php",
+          "modules/Dasbor/views/index.php",
+          "modules/Audit/views/index.php",
+          "modules/Agenda/views/index.php",
+          "public/assets/app.css"
+        ]
+      }
+    ],
+    "detik": 273,
+    "tok_est": 40209
   }
 }

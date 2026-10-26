@@ -48,6 +48,8 @@ final class SuratMasukService
         'tahun' => 'nullable|int',
         'status' => 'nullable|in:diterima,didisposisi,selesai,dibatalkan',
         'sifat' => 'nullable|in:biasa,segera,sangat_segera,rahasia',
+        'dari' => 'nullable|date',
+        'sampai' => 'nullable|date',
         'page' => 'nullable|int',
     ];
 
@@ -64,20 +66,19 @@ final class SuratMasukService
 
     /**
      * @param array<string,mixed> $query
-     * @return array{rows:list<array<string,mixed>>,total:int,page:int,pages:int,filter:array<string,string>,years:list<int>}
+     * @return array{rows:list<array<string,mixed>>,total:int,page:int,pages:int,filter:array<string,string>,
+     *   errors:array<string,string>,years:list<int>}
      */
     public function list(array $query): array
     {
-        try {
-            $f = Validator::validate($query, self::FILTER_RULES);
-        } catch (ValidationException) {
-            $f = [];
-        }
+        [$f, $errors] = Validator::filter($query, self::FILTER_RULES);
         $filter = [
             'q' => (string) ($f['q'] ?? ''),
             'tahun' => (string) ($f['tahun'] ?? ''),
             'status' => (string) ($f['status'] ?? ''),
             'sifat' => (string) ($f['sifat'] ?? ''),
+            'dari' => (string) ($f['dari'] ?? ''),
+            'sampai' => (string) ($f['sampai'] ?? ''),
         ];
         $page = max(1, (int) ($f['page'] ?? 1));
         $result = $this->repo->paginate($filter, $page, self::PER_PAGE);
@@ -87,6 +88,7 @@ final class SuratMasukService
             'page' => $page,
             'pages' => max(1, (int) ceil($result['total'] / self::PER_PAGE)),
             'filter' => $filter,
+            'errors' => $errors,
             'years' => $this->repo->years(),
         ];
     }

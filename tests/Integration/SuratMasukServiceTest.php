@@ -383,9 +383,30 @@ final class SuratMasukServiceTest extends IntegrationTestCase
     {
         $this->create();
         $result = $this->service->list(['sifat' => 'kilat', 'page' => 'x']);
-        self::assertSame(['q' => '', 'tahun' => '', 'status' => '', 'sifat' => ''], $result['filter']);
+        self::assertSame(['q' => '', 'tahun' => '', 'status' => '', 'sifat' => '', 'dari' => '', 'sampai' => ''], $result['filter']);
+        self::assertSame(Validator::MSG_IN, $result['errors']['sifat']);
         self::assertSame(1, $result['total']);
         self::assertSame([2026], $result['years']);
+    }
+
+    public function test_filter_rentang_tanggal_terima_dan_rentang_terbalik_ditolak_di_sampai(): void
+    {
+        $id = $this->create();
+        $tgl = (string) $this->service->findOrFail($id)['tgl_terima'];
+
+        self::assertSame(1, $this->service->list(['dari' => $tgl, 'sampai' => $tgl])['total'], 'Rentang inklusif');
+        self::assertSame(0, $this->service->list(['dari' => date('Y-m-d', (int) strtotime($tgl . ' +1 day'))])['total']);
+
+        $terbalik = $this->service->list(['dari' => $tgl, 'sampai' => '2000-01-01', 'sifat' => 'rahasia']);
+        self::assertSame(Validator::MSG_RENTANG, $terbalik['errors']['sampai']);
+        self::assertSame('', $terbalik['filter']['sampai'], 'Batas akhir terbalik tidak dipakai');
+        self::assertSame($tgl, $terbalik['filter']['dari']);
+        self::assertSame('rahasia', $terbalik['filter']['sifat'], 'Filter lain tetap berlaku');
+        self::assertSame(0, $terbalik['total']);
+
+        $tanggalRusak = $this->service->list(['dari' => '2026-02-30']);
+        self::assertSame(Validator::MSG_DATE, $tanggalRusak['errors']['dari']);
+        self::assertSame(1, $tanggalRusak['total']);
     }
 
     public function test_tombol_batalkan_surat_hanya_tampil_untuk_admin(): void

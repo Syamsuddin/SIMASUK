@@ -17,6 +17,7 @@ use App\Core\Session;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use Modules\Audit\Repository\AuditRepository;
+use Modules\Dasbor\Repository\DasborRepository;
 use Modules\Pengguna\Repository\PenggunaRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -46,6 +47,8 @@ final class RoleMiddlewareTest extends TestCase
         $app->instance(ErrorHandler::class, new ErrorHandler($logger));
         $app->instance(PenggunaRepository::class, $users);
         $app->instance(Audit::class, new Audit($this->createStub(AuditRepository::class)));
+        // Tes unit tanpa DB: dasbor diberi ringkasan kosong (stub mengembalikan 0 dan []).
+        $app->instance(DasborRepository::class, $this->createStub(DasborRepository::class));
         return $app;
     }
 
@@ -62,6 +65,7 @@ final class RoleMiddlewareTest extends TestCase
         yield 'master unit' => ['GET', '/master/unit'];
         yield 'ubah unit' => ['POST', '/master/unit/2/ubah'];
         yield 'batalkan surat' => ['POST', '/surat-masuk/5/batalkan'];
+        yield 'log audit' => ['GET', '/audit'];
     }
 
     /** @dataProvider adminRoutes */
@@ -84,6 +88,9 @@ final class RoleMiddlewareTest extends TestCase
         self::assertSame(200, $response->status);
         self::assertStringContainsString('Dasbor', $response->body);
         self::assertStringNotContainsString('href="/pengguna"', $response->body, 'Menu Pengaturan tak boleh tampil untuk Operator');
+        self::assertStringNotContainsString('href="/audit"', $response->body, 'Menu Log Audit tak boleh tampil untuk Operator');
+        self::assertStringContainsString('Tidak ada surat yang menunggu disposisi.', $response->body);
+        self::assertStringContainsString('Tidak ada disposisi yang lewat tenggat.', $response->body);
     }
 
     public function test_tamu_dialihkan_ke_login(): void

@@ -25,6 +25,7 @@ final class Validator
     public const MSG_BERKAS_PDF = 'Berkas harus PDF.';
     public const MSG_BERKAS_UKURAN = 'Ukuran berkas maks :n MB.';
     public const MSG_BERKAS_GAGAL = 'Berkas gagal diunggah. Pilih ulang lalu simpan kembali.';
+    public const MSG_RENTANG = 'Tanggal akhir tidak boleh sebelum tanggal awal.';
 
     /**
      * @param array<string,mixed> $input
@@ -101,6 +102,31 @@ final class Validator
             throw new ValidationException($errors);
         }
         return $clean;
+    }
+
+    /**
+     * Validasi filter GET halaman daftar. Field tak valid dibuang tanpa menggugurkan filter lain,
+     * dan pesannya dikembalikan untuk tampil di bawah field. Rentang `dari`/`sampai` terbalik
+     * ditolak di `sampai`.
+     *
+     * @param array<string,mixed> $query
+     * @param array<string,string> $rules semua aturan harus nullable
+     * @return array{0:array<string,mixed>,1:array<string,string>} [nilai bersih, pesan per field]
+     */
+    public static function filter(array $query, array $rules): array
+    {
+        $errors = [];
+        try {
+            $clean = self::validate($query, $rules);
+        } catch (ValidationException $e) {
+            $errors = $e->errors();
+            $clean = self::validate(array_diff_key($query, $errors), $rules);
+        }
+        if (isset($clean['dari'], $clean['sampai']) && $clean['sampai'] < $clean['dari']) {
+            $errors['sampai'] = self::MSG_RENTANG;
+            $clean['sampai'] = null;
+        }
+        return [$clean, $errors];
     }
 
     public static function isDate(string $value): bool

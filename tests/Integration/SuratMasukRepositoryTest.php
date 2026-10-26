@@ -103,6 +103,19 @@ final class SuratMasukRepositoryTest extends IntegrationTestCase
         self::assertSame([2026, 2025], $this->repo->years());
     }
 
+    public function test_rentang_tanggal_terima_inklusif_di_kedua_ujung(): void
+    {
+        $this->surat(2026, 1, ['tgl_terima' => '2026-02-28', 'tgl_surat' => '2026-02-01']);
+        $this->surat(2026, 2, ['tgl_terima' => '2026-03-01']);
+        $this->surat(2026, 3, ['tgl_terima' => '2026-03-31']);
+        $this->surat(2026, 4, ['tgl_terima' => '2026-04-01']);
+
+        self::assertSame([3, 2], $this->nomor(['dari' => '2026-03-01', 'sampai' => '2026-03-31']));
+        self::assertSame([4, 3], $this->nomor(['dari' => '2026-03-31']));
+        self::assertSame([1], $this->nomor(['sampai' => '2026-02-28']));
+        self::assertSame([3, 2], $this->nomor(['dari' => '2026-03-01', 'sampai' => '2026-03-31', 'sifat' => 'biasa']));
+    }
+
     public function test_karakter_wildcard_dicari_harfiah(): void
     {
         $this->surat(2026, 1, ['perihal' => 'Kenaikan 100% tunjangan']);

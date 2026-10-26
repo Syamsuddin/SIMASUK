@@ -5,18 +5,22 @@ declare(strict_types=1);
 use Modules\Agenda\Service\SuratMasukService;
 
 /**
- * Daftar surat masuk + filter (docs/26). Rentang tanggal terima menyusul di F4 (docs/03).
+ * Daftar surat masuk + filter (docs/26): cari, tahun, status, sifat, rentang tanggal terima.
  *
- * @var array{rows:list<array<string,mixed>>,total:int,page:int,pages:int,filter:array<string,string>,years:list<int>} $result
+ * @var array{rows:list<array<string,mixed>>,total:int,page:int,pages:int,filter:array<string,string>,
+ *   errors:array<string,string>,years:list<int>} $result
  */
 $filter = $result['filter'];
+$errs = $result['errors'];
 $filterActive = implode('', $filter) !== '';
 $statusBadge = ['diterima' => 'info', 'didisposisi' => 'warning', 'selesai' => 'success', 'dibatalkan' => 'danger-garis'];
 
 $fields = component('field', ['name' => 'q', 'label' => 'Cari', 'value' => $filter['q'], 'placeholder' => 'No. agenda, no. surat, asal, perihal'])
     . component('field', ['name' => 'tahun', 'label' => 'Tahun', 'type' => 'select', 'value' => $filter['tahun'], 'options' => array_combine($result['years'], $result['years']) ?: [], 'placeholder' => 'Semua tahun'])
     . component('field', ['name' => 'status', 'label' => 'Status', 'type' => 'select', 'value' => $filter['status'], 'options' => SuratMasukService::STATUS, 'placeholder' => 'Semua status'])
-    . component('field', ['name' => 'sifat', 'label' => 'Sifat', 'type' => 'select', 'value' => $filter['sifat'], 'options' => SuratMasukService::SIFAT, 'placeholder' => 'Semua sifat']);
+    . component('field', ['name' => 'sifat', 'label' => 'Sifat', 'type' => 'select', 'value' => $filter['sifat'], 'options' => SuratMasukService::SIFAT, 'placeholder' => 'Semua sifat'])
+    . component('field', ['name' => 'dari', 'label' => 'Diterima dari', 'type' => 'date', 'value' => $filter['dari'], 'error' => $errs['dari'] ?? null])
+    . component('field', ['name' => 'sampai', 'label' => 'Diterima sampai', 'type' => 'date', 'value' => $filter['sampai'], 'error' => $errs['sampai'] ?? null]);
 
 ob_start();
 foreach ($result['rows'] as $row):
