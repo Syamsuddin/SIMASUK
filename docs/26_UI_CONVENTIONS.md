@@ -66,6 +66,7 @@ Desktop-first. Minimum wajib layak: 768px. Di < 1024px sidebar menjadi laci yang
 | Catat / ubah surat | `/surat-masuk/baru`, `/surat-masuk/{id}/ubah` | formulir | semua |
 | Detail surat | `/surat-masuk/{id}` | detail: metadata, berkas, pohon disposisi, aksi | semua |
 | Catat disposisi | `/surat-masuk/{id}/disposisi/baru` | formulir | semua |
+| Lembar disposisi | `/surat-masuk/{id}/lembar-disposisi` | cetak (layout `cetak`, lihat Halaman cetak) | semua |
 | Pengguna | `/pengguna` | daftar+filter + formulir | admin |
 | Klasifikasi arsip | `/master/klasifikasi` | daftar+filter + formulir | admin |
 | Unit kerja | `/master/unit` | daftar (berindentasi hierarki) + formulir | admin |
@@ -74,6 +75,11 @@ Desktop-first. Minimum wajib layak: 768px. Di < 1024px sidebar menjadi laci yang
 Navigasi: sidebar kiri (Dasbor, Surat Masuk, lalu grup "Pengaturan" khusus admin). Topbar: nama pengguna, Ubah Password, Keluar.
 
 Aksi yang selalu lewat dialog konfirmasi: Batalkan Surat (alasan wajib), Lepas Berkas, Tandai Surat Selesai, Nonaktifkan Pengguna, Nonaktifkan unit/klasifikasi.
+
+## Halaman cetak
+Layout `cetak`: tanpa sidebar/topbar; toolbar layar (Kembali, **Cetak** ber-`data-print`, ditangani `app.js`) disembunyikan saat dicetak. Kertas A4 tegak, margin `@page` 32px. Lembar di layar: kartu `surface` lebar penuh (konten maks mengikuti token tata letak). Saat dicetak hanya warna `ink`, `ink-muted`, dan `surface`: garis tabel dan kotak centang memakai `ink` (garis `line` terlalu pucat di kertas); tanpa bayangan dan tanpa warna semantik. Tipografi dan spasi dari tabel token.
+
+Isi lembar disposisi `[ASUMSI: bentuk umum tata naskah; cocokkan dengan Lampiran I.B.3 Perbup HSS 10/2024]`: kop dua baris nama instansi (`config/app.php`, tanpa alamat/logo) · judul LEMBAR DISPOSISI · Surat dari, Nomor surat, Tanggal surat, Diterima tanggal, Nomor agenda, Sifat, Kode klasifikasi, Perihal · "Diteruskan kepada Sdr.": kotak centang unit aktif (urutan & indentasi hierarki, label jabatan pimpinan bila ada) + 2 baris kosong · "Dengan hormat harap": Tanggapan dan saran, Proses lebih lanjut, Koordinasi/konfirmasikan + 1 baris kosong · Batas waktu · Catatan (ruang tulis) · Tanggal dan Paraf · kaki "Dicetak dari SIMASUK" + waktu + nama pengguna.
 
 ## Empat state wajib (setiap halaman/komponen ber-data)
 | State | Tampilan |
@@ -84,7 +90,7 @@ Aksi yang selalu lewat dialog konfirmasi: Batalkan Surat (alasan wajib), Lepas B
 | Sukses | Redirect ke halaman hasil + toast sukses ("Surat 0127/2026 tersimpan.") |
 
 ## Bahasa & mikroteks
-Bahasa Indonesia baku, nada formal dinas, kalimat pendek. Tanggal tampil `26 Okt 2026`; formulir memakai input tanggal (nilai `Y-m-d`). Nomor agenda selalu `NNNN/TAHUN`. Kata kerja tombol tetap: **Simpan**, **Batal**, **Catat Surat**, **Catat Disposisi**, **Disposisi Lanjutan**, **Tandai Selesai**, **Batalkan Surat**, **Unduh**, **Cari**, **Keluar**. Jangan memakai sinonim (Submit, Hapus, Kirim) untuk aksi yang sama.
+Bahasa Indonesia baku, nada formal dinas, kalimat pendek. Tanggal tampil `26 Okt 2026`; formulir memakai input tanggal (nilai `Y-m-d`). Nomor agenda selalu `NNNN/TAHUN`. Kata kerja tombol tetap: **Simpan**, **Batal**, **Catat Surat**, **Catat Disposisi**, **Disposisi Lanjutan**, **Tandai Selesai**, **Batalkan Surat**, **Unduh**, **Cari**, **Cetak**, **Keluar**. Jangan memakai sinonim (Submit, Hapus, Kirim) untuk aksi yang sama.
 
 ## Aksesibilitas dasar
 Kombinasi teks/latar di tabel token lulus WCAG AA (teks putih di atas primer/semantik; `ink-muted` di atas `surface`). `accent` tidak pernah dipakai untuk teks. Setiap input punya `<label for>`. Fokus keyboard terlihat: cincin 2px `primary` offset 2px. Status tidak hanya dibedakan warna: badge selalu berteks. Dialog bisa ditutup Esc dan fokus kembali ke tombol pemicunya. Lanjutan (pembaca layar penuh) `[TERBUKA]`.

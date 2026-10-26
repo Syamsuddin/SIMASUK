@@ -46,6 +46,25 @@ final class DisposisiController
         ]);
     }
 
+    /** Lembar disposisi cetak (layout cetak, tanpa sidebar); surat tertutup dialihkan ke detail. */
+    public function lembar(Request $request, int $id): Response
+    {
+        try {
+            $context = $this->service->lembarContext($id);
+        } catch (DomainRuleException $e) {
+            $this->session->flash('toast', ['type' => 'danger', 'message' => $e->getMessage()]);
+            return Response::redirect('/surat-masuk/' . $id);
+        }
+        $config = require dirname(__DIR__, 3) . '/config/app.php';
+        return Response::view('Disposisi::lembar', [
+            'title' => 'Lembar Disposisi — Surat ' . SuratMasukService::nomor($context['surat']),
+            'surat' => $context['surat'],
+            'units' => $context['units'],
+            'kop' => $config['kop'],
+            'dicetak' => tgl_waktu(date('Y-m-d H:i:s')) . ' oleh ' . ($request->user()['nama'] ?? ''),
+        ], 'layout/cetak');
+    }
+
     public function store(Request $request, int $id): Response
     {
         $ids = $this->service->create($id, $request->post, $request->userId());

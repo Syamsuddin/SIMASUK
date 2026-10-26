@@ -14,7 +14,7 @@ Cabang/gagal:
 - Gagal simpan berkas → transaksi dibatalkan, nomor agenda tidak terpakai, file yang sudah tertulis dihapus.
 
 ## P2 — Disposisi berjenjang (Operator)
-1. Pimpinan menulis disposisi di lembar kertas; lembar diserahkan ke TU.
+1. Operator mencetak lembar disposisi dari detail surat ("Cetak Lembar Disposisi") dan menyerahkannya bersama surat; pimpinan mencentang unit tujuan dan instruksi, menulis batas waktu dan catatan, lalu lembar kembali ke TU.
 2. Di detail surat, Operator klik "Catat Disposisi": memilih unit tujuan (boleh lebih dari satu), instruksi, tenggat, catatan, dan tanggal disposisi.
 3. Sistem menyimpan satu disposisi per unit tujuan berstatus Dikirim. Bila surat masih Diterima, statusnya menjadi Didisposisi.
 4. Untuk disposisi lanjutan (Kabid → Kasubbag), Operator klik "Disposisi Lanjutan" pada disposisi induk; langkah 2–3 berulang dengan `parent_id` terisi.
@@ -23,7 +23,7 @@ Cabang/gagal:
 Cabang/gagal:
 - Unit tujuan nonaktif tidak muncul di pilihan.
 - Tenggat sebelum tanggal terima → ditolak.
-- Surat Dibatalkan atau Selesai → tombol disposisi tidak tampil; permintaan langsung ke rute ditolak 403/422.
+- Surat Dibatalkan atau Selesai → tombol disposisi dan tombol cetak lembar tidak tampil; permintaan langsung ke rute ditolak 403/422.
 - Disposisi lanjutan hanya boleh dari disposisi milik surat yang sama.
 
 ## P3 — Pembatalan surat (Admin)

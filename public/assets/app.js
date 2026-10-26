@@ -79,6 +79,10 @@
       dialogCloser.closest('dialog')?.close();
       return;
     }
+    if (el.closest('[data-print]')) {
+      window.print();
+      return;
+    }
     const back = el.closest('[data-history-back]');
     if (back && window.history.length > 1) {
       event.preventDefault();

@@ -5,6 +5,7 @@ Gerbang anti scope-creep. Permintaan di luar daftar In-scope → berhenti dan ta
 - Satu OPD: BKPSDM Kabupaten Hulu Sungai Selatan, satu instalasi.
 - Dua peran login: Admin dan Operator TU (docs/05_USER_ROLE.md).
 - Fitur bertanda MVP di docs/01_PRD.md.
+- Fitur pasca-MVP yang sudah diberi fase di docs/03_ROADMAP.md (F5: cetak lembar disposisi).
 - Disposisi diinput Operator berdasarkan lembar kertas pimpinan; pimpinan tidak login.
 - Nomor SRIKANDI sebagai teks rujukan opsional pada surat.
 

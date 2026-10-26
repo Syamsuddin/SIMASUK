@@ -18,6 +18,7 @@ Pengguna nonaktif (`is_active = 0`) tidak bisa login, apa pun perannya. Pimpinan
 | Catat surat baru, unggah berkas | ✓ | ✓ |
 | Ubah metadata surat (selain nomor agenda & tahun) | ✓ | ✓ |
 | Catat / ubah disposisi, tandai disposisi & surat selesai | ✓ | ✓ |
+| Cetak lembar disposisi | ✓ | ✓ |
 | Batalkan surat (status Dibatalkan) | ✓ | ✗ |
 | Lepas berkas dari surat (tandai dihapus, file tetap) | ✓ | ✗ |
 | Kelola pengguna (buat, nonaktifkan, reset password) | ✓ | ✗ |

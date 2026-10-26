@@ -35,6 +35,7 @@ return [
     ['POST', '/surat-masuk/{id}/selesai', [DisposisiController::class, 'closeSurat'], ['auth']],
     ['GET', '/surat-masuk/{id}/disposisi/baru', [DisposisiController::class, 'create'], ['auth']],
     ['POST', '/surat-masuk/{id}/disposisi', [DisposisiController::class, 'store'], ['auth']],
+    ['GET', '/surat-masuk/{id}/lembar-disposisi', [DisposisiController::class, 'lembar'], ['auth']],
     ['POST', '/disposisi/{id}/selesai', [DisposisiController::class, 'markDone'], ['auth']],
     ['GET', '/berkas/{id}', [BerkasController::class, 'download'], ['auth']],
 

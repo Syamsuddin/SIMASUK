@@ -26,7 +26,7 @@ simasuk/
 │   └── Audit/     {Controller,Service,Repository,views}
 ├── resources/
 │   ├── css/app.css            # sumber Tailwind: @import, @source, @theme (token docs/26)
-│   └── views/ layout/ (app.php, auth.php) · components/ · errors/ (403,404,419,500)
+│   └── views/ layout/ (app.php, auth.php, cetak.php) · components/ · errors/ (403,404,419,500)
 ├── migrations/                # 0001_create_users.sql … berurutan, tak pernah diedit setelah rilis
 ├── scripts/ migrate.php · seed.php · smoke.php · validate.sh · token_ledger.py
 ├── tests/ Unit/ · Integration/ · bootstrap.php

@@ -24,6 +24,7 @@ final class DisposisiService
 
     public const PESAN_SURAT_TERTUTUP = 'Surat sudah selesai atau dibatalkan; disposisi tidak dapat dicatat atau diubah.';
     public const PESAN_SURAT_SUDAH_TERTUTUP = 'Surat ini sudah selesai atau dibatalkan.';
+    public const PESAN_LEMBAR_TERTUTUP = 'Surat sudah selesai atau dibatalkan; lembar disposisi tidak dapat dicetak.';
     public const PESAN_TENGGAT = 'Tenggat tidak boleh sebelum tanggal terima surat (:tgl).';
     public const PESAN_TUJUAN_WAJIB = 'Pilih minimal satu unit tujuan.';
     public const PESAN_INDUK = 'Disposisi induk tidak ditemukan pada surat ini.';
@@ -97,6 +98,21 @@ final class DisposisiService
             }
         }
         return ['surat' => $surat, 'induk' => $induk, 'units' => $this->unit->pilihanTujuan()];
+    }
+
+    /**
+     * Data lembar disposisi cetak: hanya baca, tanpa log audit. Unit aktif sama dengan pilihan Catat Disposisi
+     * agar centangan pimpinan bisa disalin langsung.
+     *
+     * @return array{surat:array<string,mixed>,units:list<array<string,mixed>>}
+     */
+    public function lembarContext(int $suratId): array
+    {
+        $surat = $this->findSuratOrFail($suratId);
+        if (!self::terbuka($surat)) {
+            throw new DomainRuleException(self::PESAN_LEMBAR_TERTUTUP);
+        }
+        return ['surat' => $surat, 'units' => $this->unit->pilihanTujuan()];
     }
 
     /**

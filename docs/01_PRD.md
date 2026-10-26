@@ -10,7 +10,7 @@ Pemilik daftar fitur dan user story. Kriteria terima per fitur: docs/23_ACCEPTAN
 | F-DISPO | Disposisi berjenjang | Operator mencatat disposisi dan sub-disposisi dari lembar kertas pimpinan; riwayat pohon; tandai selesai | MVP |
 | F-DASBOR | Dasbor ringkas | Jumlah surat bulan ini, surat belum didisposisi, disposisi lewat tenggat | MVP |
 | F-AUDIT | Log audit | Setiap ubah data tercatat; Admin bisa melihatnya | MVP |
-| — | Cetak lembar disposisi PDF | Lembar disposisi berisi nomor agenda untuk ditulisi pimpinan | Nanti |
+| F-LEMBAR | Cetak lembar disposisi | Halaman cetak A4 berisi data surat, nomor agenda, dan daftar unit aktif untuk dicentang pimpinan; PDF lewat dialog cetak peramban (tanpa pustaka) | F5 |
 | — | Notifikasi WhatsApp/Telegram | Pemberitahuan disposisi baru | Nanti |
 | — | Rekap bulanan xlsx | Ekspor rekap surat per bulan | Nanti |
 | — | Peran Pimpinan login | Pimpinan mendisposisi langsung di aplikasi | Nanti |
@@ -24,6 +24,9 @@ Pemilik daftar fitur dan user story. Kriteria terima per fitur: docs/23_ACCEPTAN
 - **F-DISPO**: Sebagai Operator, saya ingin menandai surat selesai agar daftar kerja hanya berisi surat yang masih berjalan.
 - **F-DASBOR**: Sebagai Admin atau Operator, saya ingin melihat surat yang belum didisposisi dan disposisi lewat tenggat agar tidak ada yang tertinggal.
 - **F-AUDIT**: Sebagai Admin, saya ingin melihat siapa mengubah apa dan kapan agar setiap koreksi data bisa dipertanggungjawabkan.
+
+## User story (pasca-MVP)
+- **F-LEMBAR**: Sebagai Operator, saya ingin mencetak lembar disposisi dari detail surat agar pimpinan tinggal mencentang unit dan instruksi, lalu saya menyalinnya ke Catat Disposisi tanpa menulis ulang data surat.
 
 ## Kebutuhan non-fungsional
 - Waktu muat halaman daftar ≤ 1 detik untuk 10.000 surat (indeks: docs/07_DATA_MODEL.md).

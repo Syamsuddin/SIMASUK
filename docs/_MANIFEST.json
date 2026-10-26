@@ -30,8 +30,8 @@
         "priority": "mvp"
       },
       {
-        "name": "Cetak lembar disposisi PDF",
-        "priority": "later"
+        "name": "Cetak lembar disposisi (halaman cetak A4, PDF lewat dialog cetak peramban)",
+        "priority": "f5"
       },
       {
         "name": "Notifikasi WhatsApp/Telegram",
@@ -425,15 +425,16 @@
     "Sifat surat: Biasa, Segera, Sangat Segera, Rahasia",
     "Status surat: Diterima -> Didisposisi -> Selesai; plus Dibatalkan (soft delete oleh Admin)",
     "Parser .env ditulis sendiri tanpa pustaka",
-    "Roadmap empat slice: F1 fondasi+auth+master, F2 agenda+berkas, F3 disposisi, F4 dasbor+pencarian lanjut",
+    "Roadmap empat slice: F1 fondasi+auth+master, F2 agenda+berkas, F3 disposisi, F4 dasbor+pencarian lanjut; F5 lembar disposisi (pasca-MVP) dikonfirmasi 2026-10-26",
     "Metrik sukses 100% tercatat & <= 3 menit per surat",
     "Maks 5 berkas PDF aktif per surat, masing-masing <= 10 MB",
-    "Akun DB aplikasi hanya SELECT/INSERT/UPDATE; migrasi memakai akun terpisah di produksi"
+    "Akun DB aplikasi hanya SELECT/INSERT/UPDATE; migrasi memakai akun terpisah di produksi",
+    "Lembar disposisi: kotak centang unit aktif dari master + instruksi baku (Tanggapan dan saran, Proses lebih lanjut, Koordinasi/konfirmasikan); dibuka tanpa log audit karena hanya baca"
   ],
   "open_questions": [
     "Kode hex resmi Pemkab HSS",
     "Isi awal master kode klasifikasi arsip (mengikuti pedoman yang dipakai BKPSDM)",
-    "Format cetak lembar disposisi (fase berikutnya)"
+    "Bentuk resmi Lembar Disposisi Lampiran I.B.3 Perbup HSS 10/2024 serta alamat dan logo kop (F5 memakai bentuk umum, kop nama instansi saja)"
   ],
   "archive_pattern": "23-*.md"
 }

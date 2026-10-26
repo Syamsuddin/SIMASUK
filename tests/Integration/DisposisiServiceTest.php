@@ -5,18 +5,28 @@ declare(strict_types=1);
 namespace Tests\Integration;
 
 use App\Core\DomainRuleException;
+use App\Core\FileStore;
 use App\Core\HttpException;
+use App\Core\Request;
+use App\Core\Response;
 use App\Core\Session;
 use App\Core\ValidationException;
 use App\Core\Validator;
 use App\Core\View;
+use Modules\Agenda\Repository\AgendaCounterRepository;
+use Modules\Agenda\Repository\BerkasSuratRepository;
 use Modules\Agenda\Repository\SuratMasukRepository;
+use Modules\Agenda\Service\AgendaNumberService;
+use Modules\Agenda\Service\SuratMasukService;
+use Modules\Disposisi\Controller\DisposisiController;
 use Modules\Disposisi\Repository\DisposisiRepository;
 use Modules\Disposisi\Service\DisposisiService;
+use Modules\Master\Repository\KlasifikasiRepository;
 use Modules\Master\Repository\UnitKerjaRepository;
+use Modules\Master\Service\KlasifikasiService;
 use Modules\Master\Service\UnitKerjaService;
 
-/** Disposisi berjenjang, penandaan selesai, dan penutupan surat (docs/23 F-DISPO, docs/06 P2). */
+/** Disposisi berjenjang, penandaan selesai, penutupan surat, dan lembar cetak (docs/23 F-DISPO & F-LEMBAR, docs/06 P2). */
 final class DisposisiServiceTest extends IntegrationTestCase
 {
     private DisposisiService $service;
@@ -498,5 +508,145 @@ final class DisposisiServiceTest extends IntegrationTestCase
         self::assertStringContainsString('Belum ada unit tujuan aktif. Hubungi Admin', $operator);
         self::assertStringNotContainsString('<form method="post" action="/surat-masuk/' . $suratId . '/disposisi"', $operator);
         self::assertStringContainsString('href="/master/unit/baru"', $admin);
+    }
+
+    /** @param array<string,mixed> $context */
+    private function lembar(array $context): string
+    {
+        return $this->render('Disposisi::lembar', [
+            ...$context,
+            'kop' => ['PEMERINTAH KABUPATEN UJI', 'BADAN UJI'],
+            'dicetak' => '3 Mar 2026 09.00 oleh Operator Satu',
+        ]);
+    }
+
+    /** @param array<string,mixed> $store */
+    private function controller(array &$store): DisposisiController
+    {
+        $surat = new SuratMasukService(
+            $this->suratRepo,
+            new BerkasSuratRepository($this->db),
+            new AgendaNumberService(new AgendaCounterRepository($this->db), $this->db),
+            new KlasifikasiService(new KlasifikasiRepository($this->db), $this->audit, $this->db),
+            new FileStore(sys_get_temp_dir(), 10, false),
+            $this->audit,
+            $this->db
+        );
+        return new DisposisiController($this->service, $surat, new Session($store));
+    }
+
+    private function bukaLembar(int $suratId, array &$store): Response
+    {
+        $request = new Request('GET', '/surat-masuk/' . $suratId . '/lembar-disposisi');
+        $request->setUser(['id' => $this->operatorId, 'nama' => 'Operator Satu', 'role' => 'operator']);
+        return $this->controller($store)->lembar($request, $suratId);
+    }
+
+    public function test_lembar_memuat_data_surat_dan_unit_aktif_berjenjang_tanpa_unit_nonaktif(): void
+    {
+        $suratId = $this->surat();
+        $context = $this->service->lembarContext($suratId);
+        self::assertSame(
+            [$this->psdm, $this->subbidang, $this->sekretariat],
+            array_map(static fn (array $u): int => (int) $u['id'], $context['units'])
+        );
+
+        $html = $this->lembar($context);
+
+        self::assertStringContainsString('LEMBAR DISPOSISI', $html);
+        self::assertStringContainsString('PEMERINTAH KABUPATEN UJI', $html);
+        foreach (['0001/2026', 'BKN Kanreg VIII Banjarmasin', 'NS-1', '2 Mar 2026', '27 Feb 2026', 'Biasa', '800 — Kepegawaian', 'Undangan sosialisasi HCDP'] as $isi) {
+            self::assertStringContainsString($isi, $html);
+        }
+        self::assertStringContainsString('<span>Kepala Bidang PSDM</span>', $html);
+        self::assertStringContainsString('<span>Sekretaris</span>', $html);
+        self::assertMatchesRegularExpression(
+            '#<span class="inline-block w-6 shrink-0" aria-hidden="true"></span>\s*<span class="inline-block size-4[^"]*" aria-hidden="true"></span>\s*<span>Subbidang Pengembangan Kompetensi</span>#',
+            $html
+        );
+        self::assertStringNotContainsString('Bidang Lama', $html);
+        // 3 unit aktif + 2 baris kosong + 3 instruksi baku + 1 instruksi kosong
+        self::assertSame(9, substr_count($html, 'inline-block size-4 shrink-0 border border-ink'));
+        foreach (['Tanggapan dan saran', 'Proses lebih lanjut', 'Koordinasi/konfirmasikan', 'Batas waktu:', 'Catatan:', 'Paraf'] as $isi) {
+            self::assertStringContainsString($isi, $html);
+        }
+        self::assertStringContainsString('data-print=""', $html);
+        self::assertStringContainsString('Dicetak dari SIMASUK · 3 Mar 2026 09.00 oleh Operator Satu', $html);
+    }
+
+    public function test_lembar_tanpa_unit_aktif_tetap_memberi_baris_kosong(): void
+    {
+        $this->db->execute('UPDATE unit_kerja SET is_active = 0');
+        $suratId = $this->surat();
+        $context = $this->service->lembarContext($suratId);
+        self::assertSame([], $context['units']);
+
+        $html = $this->lembar($context);
+
+        self::assertStringContainsString('Belum ada unit tujuan aktif; tulis tujuan secara manual.', $html);
+        // 5 baris kosong tujuan + 1 baris kosong instruksi
+        self::assertSame(6, substr_count($html, '<li class="flex items-end gap-2">'));
+    }
+
+    public function test_lembar_surat_selesai_atau_dibatalkan_ditolak_dan_tombol_cetak_tak_tampil(): void
+    {
+        $terbuka = $this->surat(1);
+        self::assertStringContainsString(
+            'href="/surat-masuk/' . $terbuka . '/lembar-disposisi"',
+            $this->render('Agenda::detail', $this->detailData($terbuka))
+        );
+
+        foreach (['selesai' => 2, 'dibatalkan' => 3] as $status => $no) {
+            $suratId = $this->surat($no, $status);
+            try {
+                $this->service->lembarContext($suratId);
+                self::fail("Lembar surat {$status} seharusnya ditolak");
+            } catch (DomainRuleException $e) {
+                self::assertSame(DisposisiService::PESAN_LEMBAR_TERTUTUP, $e->getMessage());
+            }
+            self::assertStringNotContainsString('lembar-disposisi', $this->render('Agenda::detail', $this->detailData($suratId)));
+
+            $store = [];
+            $response = $this->bukaLembar($suratId, $store);
+            self::assertSame(303, $response->status);
+            self::assertSame('/surat-masuk/' . $suratId, $response->headers['Location']);
+            self::assertSame(['type' => 'danger', 'message' => DisposisiService::PESAN_LEMBAR_TERTUTUP], $store['_flash']['toast']);
+        }
+    }
+
+    public function test_lembar_surat_tidak_ada_404_dan_isi_surat_di_escape(): void
+    {
+        try {
+            $this->service->lembarContext(999999);
+            self::fail('Seharusnya 404');
+        } catch (HttpException $e) {
+            self::assertSame(404, $e->status());
+        }
+
+        $suratId = $this->surat();
+        $this->db->execute('UPDATE surat_masuk SET perihal = ? WHERE id = ?', ['<script>alert(1)</script> & "uji"', $suratId]);
+        $html = $this->lembar($this->service->lembarContext($suratId));
+
+        self::assertStringNotContainsString('<script>alert(1)</script>', $html);
+        self::assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt; &amp; &quot;uji&quot;', $html);
+    }
+
+    public function test_lembar_hanya_baca_tanpa_log_audit_dan_memakai_layout_cetak(): void
+    {
+        $suratId = $this->surat();
+        $sebelum = (int) $this->db->fetchValue('SELECT COUNT(*) FROM log_audit');
+
+        $store = [];
+        $response = $this->bukaLembar($suratId, $store);
+
+        self::assertSame($sebelum, (int) $this->db->fetchValue('SELECT COUNT(*) FROM log_audit'));
+        self::assertSame(200, $response->status);
+        self::assertStringContainsString('<title>Lembar Disposisi — Surat 0001/2026 · SIMASUK</title>', $response->body);
+        self::assertStringContainsString('BADAN KEPEGAWAIAN DAN PENGEMBANGAN SUMBER DAYA MANUSIA', $response->body);
+        self::assertStringContainsString('oleh Operator Satu', $response->body);
+        self::assertStringContainsString('print:hidden', $response->body);
+        self::assertStringNotContainsString('data-drawer-open', $response->body);
+        self::assertStringNotContainsString('action="/logout"', $response->body);
+        self::assertSame('diterima', $this->statusSurat($suratId));
     }
 }

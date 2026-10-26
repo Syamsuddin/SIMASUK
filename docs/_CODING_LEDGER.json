@@ -40,17 +40,17 @@
     {
       "mulai": "2026-10-26T23:22:00+08:00",
       "selesai": null,
-      "step": 0,
-      "detik": 0,
-      "tok_est": 0
+      "step": 5,
+      "detik": 510,
+      "tok_est": 31793
     }
   ],
   "step_berjalan": null,
   "blueprint": {
     "sidik_awal": "a569273905ed54f9",
-    "sidik": "a00cb83203a1a71c",
+    "sidik": "1a0a42990adf39d1",
     "dokumen": 27,
-    "disegel": "2026-10-26T23:22:00+08:00",
+    "disegel": "2026-10-26T23:36:11+08:00",
     "riwayat": [
       {
         "dari": "a569273905ed54f9",
@@ -66,9 +66,14 @@
         "dari": "e3c6c325bebafb43",
         "ke": "a00cb83203a1a71c",
         "pada": "2026-10-26T23:22:00+08:00"
+      },
+      {
+        "dari": "a00cb83203a1a71c",
+        "ke": "1a0a42990adf39d1",
+        "pada": "2026-10-26T23:36:11+08:00"
       }
     ],
-    "sidik_sebelumnya": "e3c6c325bebafb43"
+    "sidik_sebelumnya": "a00cb83203a1a71c"
   },
   "riwayat_fitur": [
     {
@@ -909,13 +914,154 @@
         "Lepas berkas (Admin) dan ubah disposisi masih menunggu keputusan pemilik produk"
       ],
       "selesai": "2026-10-26T16:33:00+08:00"
+    },
+    {
+      "fitur": "F5 Lembar disposisi",
+      "rute": "Fitur baru (vertical slice)",
+      "mulai": "2026-10-26T23:36:11+08:00",
+      "rencana": [
+        "config/routes.php",
+        "config/app.php",
+        "modules/Disposisi/Service/DisposisiService.php",
+        "modules/Disposisi/Controller/DisposisiController.php",
+        "modules/Disposisi/views/lembar.php",
+        "modules/Agenda/views/detail.php",
+        "resources/views/layout/cetak.php",
+        "resources/views/components/icons/printer.php",
+        "resources/css/app.css",
+        "public/assets/app.css",
+        "public/assets/app.js",
+        "tests/Integration/DisposisiServiceTest.php",
+        "docs/01_PRD.md",
+        "docs/02_SCOPE.md",
+        "docs/03_ROADMAP.md",
+        "docs/05_USER_ROLE.md",
+        "docs/06_BUSINESS_PROCESS.md",
+        "docs/12_PROJECT_STRUCTURE.md",
+        "docs/23_ACCEPTANCE_CRITERIA.md",
+        "docs/26_UI_CONVENTIONS.md",
+        "docs/_MANIFEST.json",
+        "docs/_archive/23-f5-lembar.md",
+        "docs/_CODING_LEDGER.json",
+        "docs/_TOKEN_LEDGER.json"
+      ],
+      "total_step": 0,
+      "step": [
+        {
+          "no": 1,
+          "nama": "Service",
+          "mulai": "2026-10-26T23:36:17+08:00",
+          "selesai": "2026-10-26T23:36:33+08:00",
+          "detik": 16,
+          "tok_est": 5709,
+          "muat": [
+            "modules/Disposisi/Service/DisposisiService.php",
+            "modules/Master/Service/UnitKerjaService.php"
+          ]
+        },
+        {
+          "no": 2,
+          "nama": "Controller/rute",
+          "mulai": "2026-10-26T23:36:33+08:00",
+          "selesai": "2026-10-26T23:37:20+08:00",
+          "detik": 47,
+          "tok_est": 3323,
+          "muat": [
+            "modules/Disposisi/Controller/DisposisiController.php",
+            "config/routes.php",
+            "config/app.php",
+            "app/Core/Request.php"
+          ]
+        },
+        {
+          "no": 3,
+          "nama": "UI",
+          "mulai": "2026-10-26T23:37:20+08:00",
+          "selesai": "2026-10-26T23:40:47+08:00",
+          "detik": 207,
+          "tok_est": 11732,
+          "muat": [
+            "resources/views/layout/cetak.php",
+            "modules/Disposisi/views/lembar.php",
+            "resources/views/components/icons/printer.php",
+            "modules/Agenda/views/detail.php",
+            "public/assets/app.js",
+            "resources/css/app.css",
+            "public/assets/app.css"
+          ]
+        },
+        {
+          "no": 4,
+          "nama": "Tes",
+          "mulai": "2026-10-26T23:40:47+08:00",
+          "selesai": "2026-10-26T23:43:12+08:00",
+          "detik": 145,
+          "tok_est": 9560,
+          "muat": [
+            "tests/Integration/DisposisiServiceTest.php",
+            "app/Core/Response.php",
+            "app/Core/Session.php",
+            "app/Core/HttpException.php"
+          ]
+        },
+        {
+          "no": 5,
+          "nama": "Gerbang fitur",
+          "mulai": "2026-10-26T23:43:18+08:00",
+          "selesai": "2026-10-26T23:44:52+08:00",
+          "detik": 95,
+          "tok_est": 1469,
+          "muat": [
+            "docs/23_ACCEPTANCE_CRITERIA.md",
+            "docs/_archive/23-f5-lembar.md",
+            "docs/03_ROADMAP.md"
+          ]
+        }
+      ],
+      "detik": 510,
+      "tok_est": 31793,
+      "deviasi": [
+        "modules/Disposisi/Controller/DisposisiController.php — kop dibaca lewat require config/app.php karena config tak diekspos ke view; bootstrap/app.php sengaja tak disentuh (di luar rencana)",
+        "tests/Integration/DisposisiServiceTest.php — tes F-LEMBAR memakai helper setUp Disposisi; blok verifikasi 23 memakai --filter='test_lembar'",
+        "Sesi ini juga: commit penutup F4 + merge main (README, LICENSE) ke fitur/f4-dasbor + arsip F-DISPO setelah uji 768px; main tidak disentuh (docs/22: merge oleh pemilik produk)"
+      ],
+      "warn_dilewati": [
+        "S1: blok 23 bernama F-LEMBAR; 7 butir dibuktikan 5 tes test_lembar_* (53 asersi, tahan 2 mutasi) + E2E Chrome headless (PDF A4 1 halaman, toolbar display:none saat print, 768/1280 tanpa gulir)",
+        "S6: diperiksa manual — tanpa SQL baru, aturan status di Service, rute auth (RouterTest), output lewat e(), tanpa inline script (data-print di app.js), hanya token warna docs/26",
+        "S8: skrip tak mengenali view .php; empat state diperiksa manual (kosong: pesan + 5 baris kosong; gagal: 404 dan toast surat tertutup; sukses: lembar; memuat: tak berlaku, tanpa formulir)"
+      ],
+      "asumsi": [
+        "Isi lembar mengikuti bentuk umum tata naskah; belum dicocokkan dengan Lampiran I.B.3 Perbup HSS 10/2024",
+        "Kop hanya nama instansi dari config/app.php tanpa alamat dan logo",
+        "Label unit di lembar memakai jabatan_pimpinan bila ada, selain itu nama unit",
+        "Garis isian setinggi 20px (h-5) mengikuti line-height basis token docs/26",
+        "Membuka lembar tidak dicatat log_audit (hanya baca), sama dengan unduh berkas"
+      ],
+      "dokumen_diperbarui": [
+        "docs/01_PRD.md (F-LEMBAR)",
+        "docs/02_SCOPE.md (in-scope F5)",
+        "docs/03_ROADMAP.md (baris F5, status F2/F3/F5)",
+        "docs/05_USER_ROLE.md (cetak lembar)",
+        "docs/06_BUSINESS_PROCESS.md (P2 langkah 1, cabang)",
+        "docs/12_PROJECT_STRUCTURE.md (layout cetak)",
+        "docs/26_UI_CONVENTIONS.md (Halaman cetak, kata kerja Cetak, rute)",
+        "docs/_MANIFEST.json (fitur f5, pertanyaan terbuka, asumsi)",
+        "docs/23_ACCEPTANCE_CRITERIA.md (F-DISPO dan F-LEMBAR diarsipkan)"
+      ],
+      "ditunda": [
+        "Uji waktu operator F-AGENDA (catat 3 PDF < 3 menit) — satu-satunya butir aktif di 23",
+        "Cocokkan lembar dengan Lampiran I.B.3 Perbup HSS 10/2024 serta alamat dan logo kop",
+        "Merge fitur/f4-dasbor dan fitur/f5-lembar-disposisi ke main dan push (pemilik produk)",
+        "Lepas berkas (Admin) dan ubah disposisi masih menunggu keputusan pemilik produk"
+      ],
+      "selesai": "2026-10-26T23:44:52+08:00"
     }
   ],
   "akumulasi": {
-    "detik": 6458,
-    "tok_est": 377657,
+    "detik": 6968,
+    "tok_est": 409450,
     "tok_terukur": 0,
-    "step": 25,
-    "fitur": 4
+    "step": 30,
+    "fitur": 5
   }
 }

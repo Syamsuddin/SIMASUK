@@ -90,6 +90,12 @@
   }
 }
 
+/* Lembar disposisi (docs/26 Halaman cetak): A4 tegak, margin dari skala spasi. */
+@page {
+  size: A4 portrait;
+  margin: 32px;
+}
+
 @keyframes masuk {
   from { opacity: 0; }
   to { opacity: 1; }

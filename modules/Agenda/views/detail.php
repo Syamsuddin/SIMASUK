@@ -45,6 +45,7 @@ $meta = [
         <?= component('button', ['label' => 'Kembali', 'href' => '/surat-masuk', 'variant' => 'garis']) ?>
         <?php if ($terbuka): ?>
         <?= component('button', ['label' => 'Catat Disposisi', 'href' => '/surat-masuk/' . $id . '/disposisi/baru', 'icon' => 'plus']) ?>
+        <?= component('button', ['label' => 'Cetak Lembar Disposisi', 'href' => '/surat-masuk/' . $id . '/lembar-disposisi', 'variant' => 'garis', 'icon' => 'printer']) ?>
         <?= component('button', ['label' => 'Tandai Selesai', 'variant' => 'garis', 'type' => 'button', 'icon' => 'check-circle', 'attr' => ['data-dialog-open' => 'selesai-surat']]) ?>
         <?= component('confirm-dialog', [
             'id' => 'selesai-surat',
